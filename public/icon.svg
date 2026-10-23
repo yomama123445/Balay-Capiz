@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <rect width="512" height="512" rx="112" fill="#0F172A"/>
+  <!-- Capiz Window Grid Motif & Roof -->
+  <path d="M96 236L256 108L416 236" stroke="#F5C842" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="140" y="228" width="232" height="176" rx="16" fill="#FAF8F5" stroke="#F5C842" stroke-width="16"/>
+  <!-- Capiz Shell Window Panes -->
+  <line x1="256" y1="228" x2="256" y2="404" stroke="#0F172A" stroke-width="14"/>
+  <line x1="140" y1="316" x2="372" y2="316" stroke="#0F172A" stroke-width="14"/>
+  <!-- Verification Shield Dot -->
+  <circle cx="372" cy="148" r="36" fill="#15803D" stroke="#0F172A" stroke-width="10"/>
+  <path d="M356 148L367 159L389 137" stroke="#FAF8F5" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

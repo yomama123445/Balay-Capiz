@@ -1,0 +1,43 @@
+// ============================================================================
+// BalayCapiz — Android Release Signing & SDK Configuration Snippet
+// Paste inside `android/app/build.gradle` under the `android { ... }` block
+// ============================================================================
+
+android {
+    namespace "ph.edu.hercor.balaycapiz"
+    compileSdkVersion 34
+
+    defaultConfig {
+        applicationId "ph.edu.hercor.balaycapiz"
+        minSdkVersion 22          // Supports >98% of Android devices in the Philippines
+        targetSdkVersion 34       // Required for Google Play Store 2026 compliance
+        versionCode 1
+        versionName "1.0.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        release {
+            // Set these in your ~/.gradle/gradle.properties or environment variables
+            if (project.hasProperty('BALAYCAPIZ_UPLOAD_STORE_FILE')) {
+                storeFile file(BALAYCAPIZ_UPLOAD_STORE_FILE)
+                storePassword BALAYCAPIZ_UPLOAD_STORE_PASSWORD
+                keyAlias BALAYCAPIZ_UPLOAD_KEY_ALIAS
+                keyPassword BALAYCAPIZ_UPLOAD_KEY_PASSWORD
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
+        }
+    }
+}

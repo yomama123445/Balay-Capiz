@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  BalayCapiz — iOS Info.plist Permission Keys
+  Merge into `ios/App/App/Info.plist` after running `npm run cap:add:ios`
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleDisplayName</key>
+    <string>BalayCapiz</string>
+    <key>CFBundleIdentifier</key>
+    <string>ph.edu.hercor.balaycapiz</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.0.0</string>
+    <key>CFBundleVersion</key>
+    <string>1</string>
+
+    <!-- Geolocation Permission Strings (Required by Apple App Store Review) -->
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>BalayCapiz uses your current location to calculate walking distances to Hercor College Lawaan, CapSU Main, and Filamer Christian University gates.</string>
+
+    <!-- Camera & Photo Library Strings for BFP & Student ID Verification -->
+    <key>NSCameraUsageDescription</key>
+    <string>BalayCapiz uses your camera so landlords can upload BFP Fire Safety Inspection Certificates and students can verify tenancy receipts.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>BalayCapiz accesses your photo library to attach boarding house photos, BFP clearances, or rental receipts.</string>
+
+    <!-- External URL Schemes for One-Tap Landlord Dialer & SMS -->
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>tel</string>
+        <string>sms</string>
+        <string>mailto</string>
+    </array>
+</dict>
+</plist>

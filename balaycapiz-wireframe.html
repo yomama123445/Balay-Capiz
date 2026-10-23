@@ -1,0 +1,2842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BalayCapiz — Wireframe v2.0</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─────────────────────────────────────────────────────────────
+       DESIGN TOKENS
+    ───────────────────────────────────────────────────────────── */
+    :root {
+      --navy:        #111827;
+      --navy-mid:    #1f2937;
+      --navy-light:  #374151;
+      --gold:        #B8860B;
+      --gold-light:  #F5C842;
+      --gold-pale:   #FEFCE8;
+      --white:       #FFFFFF;
+      --surface:     #F9FAFB;
+      --border:      #E5E7EB;
+      --border-mid:  #D1D5DB;
+      --text-primary:#111827;
+      --text-secondary:#6B7280;
+      --text-muted:  #9CA3AF;
+      --green:       #15803D;
+      --green-bg:    #F0FDF4;
+      --green-border:#86EFAC;
+      --amber:       #B45309;
+      --amber-bg:    #FFFBEB;
+      --amber-border:#FCD34D;
+      --red:         #B91C1C;
+      --red-bg:      #FEF2F2;
+      --red-border:  #FECACA;
+      --blue:        #1D4ED8;
+      --blue-bg:     #EFF6FF;
+      --blue-border: #BFDBFE;
+
+      --radius-sm:   4px;
+      --radius-md:   8px;
+      --radius-lg:   12px;
+      --radius-xl:   16px;
+      --radius-pill: 999px;
+
+      --shadow-sm:   0 1px 2px rgba(0,0,0,0.05);
+      --shadow-md:   0 4px 12px rgba(0,0,0,0.08);
+      --shadow-lg:   0 8px 24px rgba(0,0,0,0.12);
+
+      --font: 'Inter', 'Segoe UI', Arial, sans-serif;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       GLOBAL RESET
+    ───────────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font);
+      background: #F3F4F6;
+      color: var(--text-primary);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    svg { display: inline-block; vertical-align: middle; flex-shrink: 0; }
+
+    /* ─────────────────────────────────────────────────────────────
+       PAGE CHROME — HEADER
+    ───────────────────────────────────────────────────────────── */
+    .doc-header {
+      background: var(--navy);
+      padding: 0 32px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .doc-header .wordmark {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--gold-light);
+    }
+    .doc-header .doc-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.55);
+      border-left: 1px solid rgba(255,255,255,0.15);
+      padding-left: 20px;
+      flex: 1;
+    }
+    .doc-header .doc-meta {
+      font-size: 11px;
+      color: rgba(255,255,255,0.35);
+      text-align: right;
+      line-height: 1.6;
+    }
+    .version-tag {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: var(--radius-sm);
+      padding: 3px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.5px;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       REFERENCE RIBBON
+    ───────────────────────────────────────────────────────────── */
+    .ref-ribbon {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .ref-ribbon .label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+    .ref-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-pill);
+      padding: 4px 12px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+    .ref-pill .ref-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       SECTION HEADER
+    ───────────────────────────────────────────────────────────── */
+    .section-header {
+      padding: 32px 32px 12px;
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+    .section-header .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+    }
+    .section-header .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .section-header .section-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-left: auto;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       FLOW ROW
+    ───────────────────────────────────────────────────────────── */
+    .flow-row {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 0;
+      padding: 0 32px 40px;
+      align-items: flex-start;
+      overflow-x: auto;
+    }
+    .flow-row::-webkit-scrollbar { height: 6px; }
+    .flow-row::-webkit-scrollbar-track { background: #E5E7EB; }
+    .flow-row::-webkit-scrollbar-thumb { background: #9CA3AF; border-radius: 3px; }
+
+    .flow-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .flow-connector {
+      display: flex;
+      align-items: center;
+      padding-top: 44px; /* aligns with device top */
+      flex-shrink: 0;
+    }
+    .flow-connector .arrow-line {
+      width: 32px;
+      height: 1px;
+      background: var(--border-mid);
+      position: relative;
+    }
+    .flow-connector .arrow-line::after {
+      content: '';
+      position: absolute;
+      right: -1px; top: -4px;
+      border: 4px solid transparent;
+      border-left: 6px solid var(--border-mid);
+    }
+
+    .screen-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .screen-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      background: var(--navy);
+      color: var(--white);
+      border-radius: 50%;
+      font-size: 9px;
+      font-weight: 700;
+      margin-right: 5px;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       DEVICE FRAME
+    ───────────────────────────────────────────────────────────── */
+    .device {
+      width: 320px;
+      background: var(--white);
+      border-radius: 36px;
+      border: 2px solid #D1D5DB;
+      box-shadow: var(--shadow-lg), inset 0 0 0 1px rgba(255,255,255,0.8);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .device-bar {
+      background: var(--navy);
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      flex-shrink: 0;
+    }
+    .device-bar .d-time {
+      font-size: 10px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.9);
+    }
+    .device-bar .d-pill {
+      width: 56px;
+      height: 10px;
+      background: rgba(0,0,0,0.4);
+      border-radius: 5px;
+    }
+    .device-bar .d-icons {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+    .device-bar .d-icons span {
+      display: block;
+      width: 14px;
+      height: 8px;
+    }
+    .device-screen {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: var(--surface);
+      min-height: 580px;
+      overflow: hidden;
+    }
+    .device-home-indicator {
+      background: var(--white);
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .device-home-indicator span {
+      display: block;
+      width: 100px;
+      height: 4px;
+      background: #D1D5DB;
+      border-radius: 2px;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       ANNOTATION SIDEBAR
+    ───────────────────────────────────────────────────────────── */
+    .annotation {
+      width: 240px;
+      flex-shrink: 0;
+      margin-left: 28px;
+      align-self: flex-start;
+      margin-top: 36px;
+    }
+    .annotation-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 12px;
+    }
+    .annotation-card h4 {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .annotation-card h4 .a-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+    .annotation-card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .annotation-card ul li {
+      font-size: 11px;
+      color: var(--text-secondary);
+      padding-left: 12px;
+      position: relative;
+      line-height: 1.5;
+    }
+    .annotation-card ul li::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 7px;
+      width: 5px; height: 1px;
+      background: var(--gold);
+    }
+    .callout {
+      background: var(--gold-pale);
+      border: 1px solid #FDE68A;
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+      font-size: 11px;
+      color: #78350F;
+      line-height: 1.5;
+    }
+    .callout strong { color: #92400E; }
+    .ref-credit {
+      font-size: 10px;
+      color: var(--text-muted);
+      font-style: italic;
+      margin-top: 8px;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       WIREFRAME UI COMPONENTS — APP SHELL
+    ───────────────────────────────────────────────────────────── */
+
+    /* Top Navigation Bar */
+    .app-navbar {
+      background: var(--navy);
+      padding: 0 14px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .app-navbar .nav-wordmark {
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: var(--gold-light);
+      flex: 1;
+    }
+    .app-navbar .nav-back {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.7);
+      cursor: pointer;
+    }
+    .app-navbar .nav-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--white);
+      flex: 1;
+      text-align: center;
+    }
+    .nav-icon-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-md);
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* Bottom Tab Bar */
+    .app-tabbar {
+      display: flex;
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      padding: 6px 0 4px;
+      flex-shrink: 0;
+    }
+    .tab-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+    .tab-item .tab-label {
+      font-size: 9px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+    .tab-item.active .tab-label { color: var(--navy); font-weight: 700; }
+    .tab-item .tab-icon-wrap {
+      color: var(--text-muted);
+    }
+    .tab-item.active .tab-icon-wrap { color: var(--navy); }
+
+    /* ─────────────────────────────────────────────────────────────
+       BADGE SYSTEM
+    ───────────────────────────────────────────────────────────── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: var(--radius-pill);
+      font-size: 10px;
+      font-weight: 600;
+      line-height: 1.6;
+    }
+    .badge-green  { background: var(--green-bg);  color: var(--green);  border: 1px solid var(--green-border); }
+    .badge-amber  { background: var(--amber-bg);  color: var(--amber);  border: 1px solid var(--amber-border); }
+    .badge-red    { background: var(--red-bg);    color: var(--red);    border: 1px solid var(--red-border); }
+    .badge-blue   { background: var(--blue-bg);   color: var(--blue);   border: 1px solid var(--blue-border); }
+    .badge-navy   { background: var(--navy);       color: var(--white);  border: 1px solid var(--navy); }
+    .badge-neutral{ background: var(--surface);   color: var(--text-secondary); border: 1px solid var(--border); }
+
+    /* ─────────────────────────────────────────────────────────────
+       SEARCH PILL (Airbnb-inspired)
+    ───────────────────────────────────────────────────────────── */
+    .search-pill {
+      background: var(--white);
+      border: 1px solid var(--border-mid);
+      border-radius: var(--radius-pill);
+      display: flex;
+      align-items: center;
+      gap: 0;
+      padding: 0;
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      cursor: text;
+    }
+    .search-pill .sp-segment {
+      padding: 9px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      flex: 1;
+      min-width: 0;
+    }
+    .search-pill .sp-segment:not(:last-child) {
+      border-right: 1px solid var(--border);
+    }
+    .search-pill .sp-label {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--text-primary);
+    }
+    .search-pill .sp-value {
+      font-size: 10px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .search-pill .sp-search-btn {
+      width: 36px; height: 36px;
+      margin: 4px;
+      border-radius: var(--radius-pill);
+      background: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--white);
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       CATEGORY CHIP ROW (Airbnb-style)
+    ───────────────────────────────────────────────────────────── */
+    .chip-row {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 0 14px;
+    }
+    .chip-row::-webkit-scrollbar { display: none; }
+    .chip {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 8px 12px;
+      border-bottom: 2px solid transparent;
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--text-muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .chip.active {
+      color: var(--text-primary);
+      border-bottom-color: var(--navy);
+      font-weight: 700;
+    }
+    .chip .chip-icon { color: inherit; }
+
+    /* ─────────────────────────────────────────────────────────────
+       LISTING CARD
+    ───────────────────────────────────────────────────────────── */
+    .listing-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .listing-card-img {
+      background: #E5E7EB;
+      height: 96px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .listing-card-img .img-label {
+      font-size: 10px;
+      color: #9CA3AF;
+      font-weight: 500;
+    }
+    .listing-card-img .save-btn {
+      position: absolute;
+      top: 8px; right: 8px;
+      width: 26px; height: 26px;
+      background: rgba(255,255,255,0.92);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: var(--shadow-sm);
+      color: var(--text-muted);
+    }
+    .listing-card-img .verified-bar {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: rgba(17,24,39,0.85);
+      padding: 4px 10px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .listing-card-img .verified-bar span {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--gold-light);
+    }
+    .listing-card-body { padding: 10px 12px 8px; }
+    .listing-card-title { font-size: 13px; font-weight: 700; color: var(--text-primary); margin-bottom: 2px; }
+    .listing-card-loc {
+      display: flex; align-items: center; gap: 4px;
+      font-size: 11px; color: var(--text-secondary); margin-bottom: 6px;
+    }
+    .listing-card-price { font-size: 14px; font-weight: 800; color: var(--text-primary); }
+    .listing-card-price .price-unit { font-size: 10px; font-weight: 400; color: var(--text-muted); }
+    .listing-card-badges { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 7px; }
+    .listing-card-actions {
+      display: flex; gap: 6px;
+      padding: 8px 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       BUTTONS
+    ───────────────────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      font-family: var(--font);
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      border-radius: var(--radius-md);
+      transition: opacity 0.15s;
+    }
+    .btn:hover { opacity: 0.88; }
+    .btn-sm { font-size: 11px; padding: 6px 10px; flex: 1; }
+    .btn-md { font-size: 12px; padding: 9px 16px; }
+    .btn-lg { font-size: 13px; padding: 12px 16px; width: 100%; justify-content: center; }
+    .btn-primary { background: var(--navy); color: var(--white); }
+    .btn-gold    { background: var(--gold-light); color: var(--navy); }
+    .btn-outline { background: var(--white); color: var(--navy); border: 1.5px solid var(--border-mid); }
+    .btn-ghost   { background: var(--surface); color: var(--text-secondary); border: 1.5px solid var(--border); }
+
+    /* ─────────────────────────────────────────────────────────────
+       FORM ELEMENTS
+    ───────────────────────────────────────────────────────────── */
+    .form-section { padding: 0 14px; }
+    .form-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 5px;
+    }
+    .form-label .req { color: var(--red); margin-left: 2px; }
+    .form-input {
+      width: 100%;
+      background: var(--white);
+      border: 1.5px solid var(--border-mid);
+      border-radius: var(--radius-md);
+      padding: 9px 12px;
+      font-size: 12px;
+      font-family: var(--font);
+      color: var(--text-primary);
+      outline: none;
+      margin-bottom: 12px;
+    }
+    .form-input::placeholder { color: var(--text-muted); }
+    .form-input:focus { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(17,24,39,0.08); }
+    .form-hint {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: -8px;
+      margin-bottom: 12px;
+    }
+    .form-group { margin-bottom: 14px; }
+
+    /* Toggle Switch */
+    .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .toggle-row:last-child { border-bottom: none; }
+    .toggle-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-primary);
+    }
+    .toggle-label .t-icon { color: var(--text-secondary); }
+    .toggle {
+      width: 36px; height: 20px;
+      border-radius: var(--radius-pill);
+      background: #D1D5DB;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .toggle.on { background: var(--navy); }
+    .toggle::after {
+      content: '';
+      position: absolute;
+      width: 16px; height: 16px;
+      background: var(--white);
+      border-radius: 50%;
+      top: 2px; left: 2px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .toggle.on::after { left: 18px; }
+
+    /* Upload Box */
+    .upload-box {
+      background: var(--surface);
+      border: 1.5px dashed var(--border-mid);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .upload-box .ub-icon { color: var(--text-muted); margin-bottom: 5px; }
+    .upload-box .ub-label { font-size: 11px; font-weight: 600; color: var(--text-secondary); }
+    .upload-box .ub-hint  { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+    /* ─────────────────────────────────────────────────────────────
+       STAT STRIP
+    ───────────────────────────────────────────────────────────── */
+    .stat-strip {
+      display: flex;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .stat-item {
+      flex: 1;
+      text-align: center;
+      padding: 9px 6px;
+      border-right: 1px solid rgba(255,255,255,0.08);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-val   { font-size: 15px; font-weight: 800; color: var(--gold-light); }
+    .stat-label { font-size: 9px; color: rgba(255,255,255,0.45); margin-top: 1px; font-weight: 500; }
+
+    /* ─────────────────────────────────────────────────────────────
+       MAP PLACEHOLDER
+    ───────────────────────────────────────────────────────────── */
+    .map-placeholder {
+      background: #EEF2FF;
+      border: 1px solid #C7D2FE;
+      border-radius: var(--radius-md);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .map-placeholder .map-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(99,102,241,0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(99,102,241,0.07) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+    .map-placeholder .map-road-h {
+      position: absolute;
+      height: 8px;
+      background: rgba(255,255,255,0.7);
+      left: 0; right: 0;
+    }
+    .map-placeholder .map-road-v {
+      position: absolute;
+      width: 8px;
+      background: rgba(255,255,255,0.7);
+      top: 0; bottom: 0;
+    }
+    .map-placeholder .map-label-bar {
+      position: absolute;
+      bottom: 8px; right: 8px;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 3px 8px;
+      font-size: 9px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      box-shadow: var(--shadow-sm);
+      z-index: 2;
+    }
+
+    /* Map Pin */
+    .map-pin-wrap {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 3;
+    }
+    .map-pin-price {
+      background: var(--navy);
+      color: var(--white);
+      font-size: 9px;
+      font-weight: 700;
+      padding: 3px 7px;
+      border-radius: var(--radius-pill);
+      white-space: nowrap;
+      box-shadow: var(--shadow-md);
+    }
+    .map-pin-price.active { background: var(--gold-light); color: var(--navy); }
+    .map-pin-tail {
+      width: 0; height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid var(--navy);
+    }
+    .map-pin-tail.active { border-top-color: var(--gold-light); }
+
+    /* Campus Pin */
+    .campus-pin {
+      background: var(--blue-bg);
+      border: 1.5px solid var(--blue-border);
+      color: var(--blue);
+      font-size: 9px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: var(--radius-pill);
+      position: absolute;
+      z-index: 3;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       ALERT / INLINE NOTICE
+    ───────────────────────────────────────────────────────────── */
+    .inline-notice {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: var(--radius-md);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+    .notice-amber { background: var(--amber-bg); border: 1px solid var(--amber-border); color: #78350F; }
+    .notice-green { background: var(--green-bg);  border: 1px solid var(--green-border); color: #14532D; }
+    .notice-blue  { background: var(--blue-bg);   border: 1px solid var(--blue-border); color: #1E3A8A; }
+    .inline-notice .notice-icon { flex-shrink: 0; margin-top: 1px; }
+
+    /* ─────────────────────────────────────────────────────────────
+       SAFETY COMPLIANCE CARD (BalayCapiz-unique)
+    ───────────────────────────────────────────────────────────── */
+    .safety-card {
+      background: var(--green-bg);
+      border: 1px solid var(--green-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .safety-card-header {
+      padding: 9px 12px;
+      background: rgba(21,128,61,0.07);
+      border-bottom: 1px solid var(--green-border);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .safety-card-header .sc-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--green);
+    }
+    .safety-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--green-border);
+      gap: 8px;
+    }
+    .safety-row:last-child { border-bottom: none; }
+    .safety-row .sr-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       REVIEW CARD
+    ───────────────────────────────────────────────────────────── */
+    .review-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+    }
+    .review-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .reviewer-info {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .reviewer-avatar {
+      width: 26px; height: 26px;
+      background: #D1D5DB;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      flex-shrink: 0;
+    }
+    .reviewer-name { font-size: 11px; font-weight: 700; color: var(--text-primary); }
+    .reviewer-tenant { font-size: 9px; color: var(--blue); font-weight: 600; }
+    .star-row {
+      display: flex;
+      gap: 1px;
+    }
+    .star-fill { color: #F59E0B; }
+    .star-empty { color: #D1D5DB; }
+    .review-text { font-size: 11px; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ─────────────────────────────────────────────────────────────
+       CTA BOTTOM BAR
+    ───────────────────────────────────────────────────────────── */
+    .cta-bar {
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      padding: 10px 14px;
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       SECTION DIVIDER
+    ───────────────────────────────────────────────────────────── */
+    .section-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0 32px 0;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       FILTER SCREEN SPECIFIC
+    ───────────────────────────────────────────────────────────── */
+    .filter-group-header {
+      padding: 12px 14px 6px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0;
+    }
+    .filter-select {
+      background: var(--white);
+      border: 1px solid var(--border-mid);
+      border-radius: var(--radius-sm);
+      padding: 4px 8px;
+      font-size: 11px;
+      color: var(--text-primary);
+      font-family: var(--font);
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       RESULTS SCREEN
+    ───────────────────────────────────────────────────────────── */
+    .results-meta {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 7px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .results-meta .res-count { font-size: 12px; font-weight: 600; color: var(--text-primary); }
+    .results-meta .res-sort  { font-size: 11px; font-weight: 600; color: var(--navy); display: flex; align-items: center; gap: 4px; }
+
+    .map-list-toggle {
+      display: flex;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .mlt-item {
+      flex: 1;
+      text-align: center;
+      padding: 7px 0;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+    .mlt-item.active { background: var(--navy); color: var(--white); }
+
+    /* ─────────────────────────────────────────────────────────────
+       LANDLORD DASHBOARD
+    ───────────────────────────────────────────────────────────── */
+    .dashboard-kpi-row {
+      display: flex;
+      gap: 8px;
+    }
+    .kpi-card {
+      flex: 1;
+      border-radius: var(--radius-md);
+      padding: 10px 8px;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+    .kpi-card .kpi-val { font-size: 18px; font-weight: 800; }
+    .kpi-card .kpi-label { font-size: 9px; font-weight: 500; margin-top: 2px; }
+    .kpi-navy  { background: var(--navy); border-color: var(--navy); }
+    .kpi-navy  .kpi-val { color: var(--gold-light); }
+    .kpi-navy  .kpi-label { color: rgba(255,255,255,0.5); }
+    .kpi-green { background: var(--green-bg); border-color: var(--green-border); }
+    .kpi-green .kpi-val { color: var(--green); }
+    .kpi-green .kpi-label { color: #166534; }
+    .kpi-amber { background: var(--amber-bg); border-color: var(--amber-border); }
+    .kpi-amber .kpi-val { color: var(--amber); }
+    .kpi-amber .kpi-label { color: #92400E; }
+
+    .mgmt-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .mgmt-card-body { padding: 10px 12px 8px; }
+    .mgmt-card-title { font-size: 13px; font-weight: 700; color: var(--text-primary); margin-bottom: 2px; }
+    .mgmt-card-sub   { font-size: 11px; color: var(--text-secondary); }
+    .mgmt-card-expiry {
+      font-size: 10px;
+      color: var(--amber);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 6px;
+    }
+    .mgmt-card-actions {
+      display: flex;
+      gap: 6px;
+      padding: 8px 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Add listing placeholder */
+    .add-listing-placeholder {
+      margin: 0 14px 12px;
+      border: 1.5px dashed var(--border-mid);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       ONBOARDING / SPLASH
+    ───────────────────────────────────────────────────────────── */
+    .splash-screen {
+      background: var(--navy);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 22px;
+      text-align: center;
+    }
+    .splash-mark {
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: var(--gold-light);
+    }
+    .splash-sub {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 24px;
+      margin-top: 2px;
+    }
+    .splash-illustration {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+      border: 1.5px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      color: rgba(255,255,255,0.3);
+    }
+    .splash-headline {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+    .splash-body {
+      font-size: 11px;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+    .splash-cta-primary {
+      background: var(--gold-light);
+      color: var(--navy);
+      font-weight: 800;
+      font-size: 13px;
+      padding: 13px 16px;
+      border-radius: var(--radius-lg);
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      font-family: var(--font);
+      margin-bottom: 10px;
+    }
+    .splash-cta-secondary {
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+    }
+    .splash-cta-secondary a { color: var(--gold-light); font-weight: 600; text-decoration: none; }
+
+    /* ─────────────────────────────────────────────────────────────
+       HOME HERO
+    ───────────────────────────────────────────────────────────── */
+    .home-hero {
+      background: var(--navy);
+      padding: 16px 14px 18px;
+      flex-shrink: 0;
+    }
+    .home-hero .hero-eyebrow {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 4px;
+    }
+    .home-hero .hero-heading {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+    .campus-selector {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .campus-chip {
+      padding: 5px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.6);
+      background: transparent;
+    }
+    .campus-chip.active {
+      background: var(--gold-light);
+      color: var(--navy);
+      border-color: transparent;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       TRUST INDICATOR ROW
+    ───────────────────────────────────────────────────────────── */
+    .trust-row {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 7px 14px;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+    .trust-item .t-icon { color: var(--navy); }
+
+    /* ─────────────────────────────────────────────────────────────
+       SCROLLABLE INNER CONTENT
+    ───────────────────────────────────────────────────────────── */
+    .scroll-area {
+      flex: 1;
+      overflow-y: auto;
+    }
+    .scroll-area::-webkit-scrollbar { width: 3px; }
+    .scroll-area::-webkit-scrollbar-track { background: transparent; }
+    .scroll-area::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 2px; }
+
+    .content-pad { padding: 12px 14px; }
+    .content-gap { display: flex; flex-direction: column; gap: 10px; }
+    .content-gap-sm { display: flex; flex-direction: column; gap: 7px; }
+
+    /* Section label inside screen */
+    .screen-section-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      padding: 12px 14px 6px;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       DETAIL PAGE
+    ───────────────────────────────────────────────────────────── */
+    .detail-hero {
+      background: #D1D5DB;
+      height: 148px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .detail-hero .img-placeholder-label {
+      font-size: 10px;
+      font-weight: 500;
+      color: #9CA3AF;
+    }
+    .detail-hero .carousel-nav {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+    .c-dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.45); }
+    .c-dot.active { width: 14px; border-radius: 3px; background: var(--white); }
+    .detail-hero .back-pill {
+      position: absolute;
+      top: 10px; left: 10px;
+      background: rgba(255,255,255,0.9);
+      border-radius: var(--radius-pill);
+      padding: 5px 10px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-primary);
+      box-shadow: var(--shadow-sm);
+    }
+    .detail-hero .save-pill {
+      position: absolute;
+      top: 10px; right: 10px;
+      background: rgba(255,255,255,0.9);
+      border-radius: var(--radius-pill);
+      width: 32px; height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Price row */
+    .price-block {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      background: var(--surface);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+    }
+    .price-block .pb-price { font-size: 18px; font-weight: 800; color: var(--text-primary); }
+    .price-block .pb-unit  { font-size: 10px; color: var(--text-muted); margin-top: 1px; }
+
+    /* Amenity grid */
+    .amenity-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+    .amenity-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 10px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+    .amenity-item .a-icon { color: var(--navy); }
+
+    /* Landlord info strip */
+    .landlord-strip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+    }
+    .landlord-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: #D1D5DB;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      flex-shrink: 0;
+    }
+    .ll-name { font-size: 12px; font-weight: 700; color: var(--text-primary); }
+    .ll-meta { font-size: 10px; color: var(--text-muted); margin-top: 1px; }
+    .ll-verified { font-size: 10px; color: var(--blue); font-weight: 700; display: flex; align-items: center; gap: 4px; margin-top: 3px; }
+
+    /* ─────────────────────────────────────────────────────────────
+       LEGEND SECTION
+    ───────────────────────────────────────────────────────────── */
+    .legend-section {
+      padding: 32px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+    }
+    .legend-block {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px 24px;
+      min-width: 280px;
+      box-shadow: var(--shadow-sm);
+    }
+    .legend-block h3 {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 9px;
+    }
+    .legend-swatch {
+      width: 20px; height: 20px;
+      border-radius: var(--radius-sm);
+      flex-shrink: 0;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       DOC FOOTER
+    ───────────────────────────────────────────────────────────── */
+    .doc-footer {
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      padding: 20px 32px;
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    /* Utility */
+    .flex { display: flex; }
+    .flex-col { display: flex; flex-direction: column; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .gap-4 { gap: 4px; }
+    .gap-6 { gap: 6px; }
+    .gap-8 { gap: 8px; }
+    .gap-10 { gap: 10px; }
+    .w-full { width: 100%; }
+    .mb-6  { margin-bottom: 6px; }
+    .mb-8  { margin-bottom: 8px; }
+    .mb-10 { margin-bottom: 10px; }
+    .mb-12 { margin-bottom: 12px; }
+    .text-11 { font-size: 11px; }
+    .text-10 { font-size: 10px; }
+    .fw-600 { font-weight: 600; }
+    .fw-700 { font-weight: 700; }
+    .color-muted { color: var(--text-muted); }
+    .color-secondary { color: var(--text-secondary); }
+    .color-navy { color: var(--navy); }
+    .divider { height: 1px; background: var(--border); margin: 8px 0; }
+    .px-14 { padding-left: 14px; padding-right: 14px; }
+    .pb-10 { padding-bottom: 10px; }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════
+     DOCUMENT HEADER
+══════════════════════════════════════════════════════════════ -->
+<header class="doc-header">
+  <span class="wordmark">BalayCapiz</span>
+  <span class="doc-title">Student Housing Portal — Wireframe Documentation</span>
+  <span class="version-tag">v2.0</span>
+  <div class="doc-meta">
+    Hercor College · CSD · FE101<br>
+    Aldea · Tibudan · Dumaniel · Borro · Villa
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════════════════════════
+     REFERENCE RIBBON
+══════════════════════════════════════════════════════════════ -->
+<div class="ref-ribbon">
+  <span class="label">Design References</span>
+  <span class="ref-pill"><span class="ref-dot"></span>Airbnb — Search pill, listing cards, category chips, map toggle</span>
+  <span class="ref-pill"><span class="ref-dot"></span>Dormy PH / Suzy Rent — Bedspace filters, verification tiers, landlord tools</span>
+  <span class="ref-pill"><span class="ref-dot"></span>unidorms.ph — Trust stack, KYC badge, campus-proximity display</span>
+  <span class="ref-pill"><span class="ref-dot"></span>Paabangan — 30-day auto-expiry, landlord vacancy management</span>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     FLOW A — STUDENT JOURNEY
+══════════════════════════════════════════════════════════════ -->
+<div class="section-header">
+  <span class="section-label">Flow A</span>
+  <span class="section-title">Student Discovery Journey</span>
+  <span class="section-desc">Splash → Home → Filters → Results</span>
+</div>
+
+<div class="flow-row">
+
+  <!-- ── SCREEN 01: SPLASH ── -->
+  <div class="flow-step">
+    <div class="screen-label"><span class="screen-number">01</span>Splash / Onboarding</div>
+    <div class="device">
+      <div class="device-bar">
+        <span class="d-time">9:41</span>
+        <span class="d-pill"></span>
+        <div class="d-icons">
+          <svg width="14" height="8" viewBox="0 0 14 8" fill="none"><rect x="0" y="0" width="2" height="8" rx="1" fill="rgba(255,255,255,0.5)"/><rect x="3" y="2" width="2" height="6" rx="1" fill="rgba(255,255,255,0.5)"/><rect x="6" y="4" width="2" height="4" rx="1" fill="rgba(255,255,255,0.8)"/><rect x="9" y="1" width="2" height="7" rx="1" fill="rgba(255,255,255,0.8)"/></svg>
+          <svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M6 1.5C8.2 1.5 10.1 2.5 11.4 4.1L12 3.4C10.5 1.6 8.3 0.5 6 0.5C3.7 0.5 1.5 1.6 0 3.4L0.6 4.1C1.9 2.5 3.8 1.5 6 1.5Z" fill="rgba(255,255,255,0.8)"/><path d="M6 3.5C7.5 3.5 8.9 4.2 9.8 5.3L10.4 4.6C9.3 3.3 7.7 2.5 6 2.5C4.3 2.5 2.7 3.3 1.6 4.6L2.2 5.3C3.1 4.2 4.5 3.5 6 3.5Z" fill="rgba(255,255,255,0.8)"/><circle cx="6" cy="7.5" r="1" fill="rgba(255,255,255,0.8)"/></svg>
+        </div>
+      </div>
+      <div class="device-screen">
+        <div class="splash-screen">
+          <span class="splash-mark">BalayCapiz</span>
+          <span class="splash-sub">Roxas City · Capiz</span>
+
+          <div class="splash-illustration">
+            <!-- House icon -->
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/>
+              <path d="M9 21V12h6v9"/>
+            </svg>
+          </div>
+
+          <h2 class="splash-headline">Find verified student rooms near your campus.</h2>
+          <p class="splash-body">Browse boarding houses near Hercor Lawaan, CapSU Main, and Filamer — pre-filtered by distance, electricity rate, flood risk, and BFP clearance.</p>
+
+          <button class="splash-cta-primary">Find a Room</button>
+          <p class="splash-cta-secondary">Are you a landlord? <a href="#">List your property</a></p>
+        </div>
+      </div>
+      <div class="device-home-indicator"><span></span></div>
+    </div>
+  </div>
+
+  <div class="flow-connector"><div class="arrow-line"></div></div>
+
+  <!-- ── SCREEN 02: HOME / SEARCH ── -->
+  <div class="flow-step">
+    <div class="screen-label"><span class="screen-number">02</span>Home / Search</div>
+    <div class="device">
+      <div class="device-bar">
+        <span class="d-time">9:41</span>
+        <span class="d-pill"></span>
+        <div class="d-icons">
+          <svg width="14" height="8" viewBox="0 0 14 8" fill="none"><rect x="0" y="0" width="2" height="8" rx="1" fill="rgba(255,255,255,0.5)"/><rect x="3" y="2" width="2" height="6" rx="1" fill="rgba(255,255,255,0.5)"/><rect x="6" y="4" width="2" height="4" rx="1" fill="rgba(255,255,255,0.8)"/><rect x="9" y="1" width="2" height="7" rx="1" fill="rgba(255,255,255,0.8)"/></svg>
+        </div>
+      </div>
+      <div class="device-screen">
+
+        <!-- App Nav -->
+        <div class="app-navbar">
+          <span class="nav-wordmark">BalayCapiz</span>
+          <div class="nav-icon-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+          </div>
+          <div class="nav-icon-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </div>
+        </div>
+
+        <!-- Hero -->
+        <div class="home-hero">
+          <p class="hero-eyebrow">Student Housing · Roxas City</p>
+          <h2 class="hero-heading">Where are you studying?</h2>
+          <div class="campus-selector">
+            <span class="campus-chip active">Hercor Lawaan</span>
+            <span class="campus-chip">CapSU Main</span>
+            <span class="campus-chip">Filamer</span>
+          </div>
+          <!-- Airbnb-style search pill -->
+          <div class="search-pill">
+            <div class="sp-segment">
+              <span class="sp-label">Location</span>
+              <span class="sp-value">Near Hercor Gate</span>
+            </div>
+            <div class="sp-segment">
+              <span class="sp-label">Budget</span>
+              <span class="sp-value">Any range</span>
+            </div>
+            <div class="sp-search-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            </div>
+          </div>
+          <div class="stat-strip" style="margin-top:12px;">
+            <div class="stat-item"><div class="stat-val">47</div><div class="stat-label">Active Listings</div></div>
+            <div class="stat-item"><div class="stat-val">32</div><div class="stat-label">Verified</div></div>
+            <div class="stat-item"><div class="stat-val">₱0</div><div class="stat-label">Broker Fee</div></div>
+          </div>
+        </div>
+
+        <!-- Category chip bar — Airbnb pattern -->
+        <div style="padding: 0; border-bottom: 1px solid var(--border); background: var(--white);">
+          <div class="chip-row" style="padding: 4px 14px;">
+            <div class="chip active">
+              <svg class="chip-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
+              All
+            </div>
+            <div class="chip">
+              <svg class="chip-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+              Bedspace
+            </div>
+            <div class="chip">
+              <svg class="chip-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg>
+              Single Room
+            </div>
+            <div class="chip">
+              <svg class="chip-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4"/><circle cx="17" cy="11" r="3"/><path d="M21 21v-2a3 3 0 00-3-3h-2a3 3 0 00-3 3v2"/></svg>
+              Shared
+            </div>
+            <div class="chip">
+              <svg class="chip-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+              For Women
+            </div>
+            <div class="chip">
+              <svg class="chip-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12.55a11 11 0 0114.08 0M1.42 9a16 16 0 0121.16 0M8.53 16.11a6 6 0 016.95 0M12 20h.01"/></svg>
+              Wi-Fi Incl.
+            </div>
+          </div>
+        </div>
+
+        <!-- Trust indicators row -->
+        <div class="trust-row">
+          <div class="trust-item">
+            <svg class="t-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            BFP Verified
+          </div>
+          <div class="trust-item">
+            <svg class="t-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            CAPELCO Rate
+          </div>
+          <div class="trust-item">
+            <svg class="t-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 6v6l4 2"/></svg>
+            Flood Badge
+          </div>
+        </div>
+
+        <div class="scroll-area">
+          <div class="screen-section-label">Featured Near Hercor Lawaan</div>
+
+          <!-- Listing Card 1 -->
+          <div class="px-14 mb-10">
+            <div class="listing-card">
+              <div class="listing-card-img">
+                <span class="img-label">Property Photo</span>
+                <div class="save-btn">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                </div>
+                <div class="verified-bar">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#F5C842" stroke-width="2.5" stroke-linecap="round"><path d="M9 12l2 2 4-4"/><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  <span>Verified Listing</span>
+                </div>
+              </div>
+              <div class="listing-card-body">
+                <div class="listing-card-title">Lawaan Student Haven</div>
+                <div class="listing-card-loc">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  350 m · Lawaan, Roxas City
+                </div>
+                <div class="listing-card-price">₱2,200 <span class="price-unit">/ month · water incl.</span></div>
+                <div class="listing-card-badges">
+                  <span class="badge badge-green">
+                    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    Flood: Low
+                  </span>
+                  <span class="badge badge-blue">
+                    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                    CAPELCO
+                  </span>
+                  <span class="badge badge-green">
+                    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    BFP
+                  </span>
+                  <span class="badge badge-neutral">★ 4.4 (14)</span>
+                </div>
+              </div>
+              <div class="listing-card-actions">
+                <button class="btn btn-primary btn-sm">View Details</button>
+                <button class="btn btn-outline btn-sm">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+                  Call
+                </button>
+                <button class="btn btn-outline btn-sm">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+                  SMS
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Listing Card 2 -->
+          <div class="px-14 mb-10">
+            <div class="listing-card">
+              <div class="listing-card-img" style="background:#E0E7FF;">
+                <span class="img-label">Property Photo</span>
+                <div class="save-btn">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                </div>
+              </div>
+              <div class="listing-card-body">
+                <div class="listing-card-title">Banica Boarding House</div>
+                <div class="listing-card-loc">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  480 m · Banica, Roxas City
+                </div>
+                <div class="listing-card-price">₱1,800 <span class="price-unit">/ month · bedspace</span></div>
+                <div class="listing-card-badges">
+                  <span class="badge badge-amber">
+                    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    Flood: Medium
+                  </span>
+                  <span class="badge badge-blue">CAPELCO</span>
+                  <span class="badge badge-neutral">★ 3.9 (7)</span>
+                </div>
+              </div>
+              <div class="listing-card-actions">
+                <button class="btn btn-primary btn-sm">View Details</button>
+                <button class="btn btn-outline btn-sm">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+                  Call
+                </button>
+              </div>
+            </div>
+          </div>
+        </div><!-- /scroll-area -->
+
+        <!-- Tab Bar -->
+        <div class="app-tabbar">
+          <div class="tab-item active">
+            <div class="tab-icon-wrap">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            </div>
+            <span class="tab-label">Search</span>
+          </div>
+          <div class="tab-item">
+            <div class="tab-icon-wrap">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+            </div>
+            <span class="tab-label">Map</span>
+          </div>
+          <div class="tab-item">
+            <div class="tab-icon-wrap">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            </div>
+            <span class="tab-label">Saved</span>
+          </div>
+          <div class="tab-item">
+            <div class="tab-icon-wrap">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <span class="tab-label">Profile</span>
+          </div>
+        </div>
+      </div>
+      <div class="device-home-indicator"><span></span></div>
+    </div>
+  </div>
+
+  <div class="flow-connector"><div class="arrow-line"></div></div>
+
+  <!-- ── SCREEN 03: FILTERS ── -->
+  <div class="flow-step">
+    <div class="screen-label"><span class="screen-number">03</span>Search Filters</div>
+    <div class="device">
+      <div class="device-bar">
+        <span class="d-time">9:42</span>
+        <span class="d-pill"></span>
+        <div class="d-icons"></div>
+      </div>
+      <div class="device-screen">
+        <div class="app-navbar">
+          <div class="nav-back">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            Back
+          </div>
+          <span class="nav-title">Filter Listings</span>
+          <span style="font-size:11px; font-weight:700; color:var(--gold-light); cursor:pointer;">Clear All</span>
+        </div>
+
+        <div class="scroll-area">
+          <!-- Campus & Distance -->
+          <div class="filter-group-header">Campus &amp; Distance</div>
+          <div class="content-pad" style="padding-top:8px; padding-bottom:4px;">
+            <div class="toggle-row">
+              <div class="toggle-label">Target Campus</div>
+              <select class="filter-select"><option>Hercor Lawaan</option><option>CapSU Main</option><option>Filamer</option></select>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-label">Max Distance</div>
+              <select class="filter-select"><option>≤ 500 m</option><option>≤ 1 km</option><option>≤ 2 km</option></select>
+            </div>
+          </div>
+
+          <!-- Budget & Room Type -->
+          <div class="filter-group-header">Budget &amp; Room Type</div>
+          <div class="content-pad" style="padding-top:8px; padding-bottom:4px;">
+            <label class="form-label">Monthly Rent Range</label>
+            <div class="flex gap-8 mb-12" style="align-items:center;">
+              <input type="text" class="form-input" placeholder="₱ Min" style="margin-bottom:0; flex:1;" />
+              <span style="font-size:12px; color:var(--text-muted);">—</span>
+              <input type="text" class="form-input" placeholder="₱ Max" style="margin-bottom:0; flex:1;" />
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-label">Room Type</div>
+              <select class="filter-select"><option>Any</option><option>Bedspace</option><option>Single Room</option><option>Studio</option></select>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-label">Gender Preference</div>
+              <select class="filter-select"><option>Any</option><option>Female Only</option><option>Male Only</option></select>
+            </div>
+          </div>
+
+          <!-- Safety & Verification -->
+          <div class="filter-group-header">Safety &amp; Verification</div>
+          <div class="content-pad" style="padding-top:8px; padding-bottom:4px;">
+            <div class="toggle-row">
+              <div class="toggle-label">
+                <svg class="t-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                CAPELCO Standard Rate Only
+              </div>
+              <div class="toggle on"></div>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-label">
+                <svg class="t-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                BFP Fire Clearance
+              </div>
+              <div class="toggle on"></div>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-label">
+                <svg class="t-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 12l2 2 4-4M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Verified Listings Only
+              </div>
+              <div class="toggle on"></div>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-label">
+                <svg class="t-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                Max Flood Risk
+              </div>
+              <select class="filter-select"><option>Low Only</option><option>Low + Medium</option><option>Any</option></select>
+            </div>
+          </div>
+
+          <!-- Amenities -->
+          <div class="filter-group-header">Amenities</div>
+          <div class="content-pad" style="padding-top:8px; padding-bottom:16px;">
+            <div class="toggle-row">
+              <div class="toggle-label">
+                <svg class="t-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12.55a11 11 0 0114.08 0M1.42 9a16 16 0 0121.16 0M8.53 16.11a6 6 0 016.95 0M12 20h.01"/></svg>
+                Wi-Fi Included
+              </div>
+              <div class="toggle"></div>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-label">
+                <svg class="t-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+                Study Area
+              </div>
+              <div class="toggle"></div>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-label">
+                <svg class="t-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                24/7 Gate Security
+              </div>
+              <div class="toggle"></div>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-label">
+                <svg class="t-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+                Kitchen Access
+              </div>
+              <div class="toggle"></div>
+            </div>
+
+            <button class="btn btn-primary btn-lg" style="margin-top:16px;">Show 23 Listings</button>
+          </div>
+        </div><!-- /scroll-area -->
+      </div>
+      <div class="device-home-indicator"><span></span></div>
+    </div>
+  </div>
+
+  <div class="flow-connector"><div class="arrow-line"></div></div>
+
+  <!-- ── SCREEN 04: RESULTS + MAP ── -->
+  <div class="flow-step">
+    <div class="screen-label"><span class="screen-number">04</span>Results + Map View</div>
+    <div class="device">
+      <div class="device-bar">
+        <span class="d-time">9:43</span>
+        <span class="d-pill"></span>
+        <div class="d-icons"></div>
+      </div>
+      <div class="device-screen">
+        <div class="app-navbar">
+          <div class="nav-back">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            Edit
+          </div>
+          <span class="nav-title">Near Hercor Lawaan</span>
+          <div class="nav-icon-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+          </div>
+        </div>
+
+        <div class="results-meta">
+          <span class="res-count">23 listings · ≤ 500 m</span>
+          <span class="res-sort">
+            Distance
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+          </span>
+        </div>
+
+        <!-- Map placeholder — Leaflet.js + OpenStreetMap -->
+        <div class="map-placeholder" style="height:130px; margin:10px 14px; flex-shrink:0;">
+          <div class="map-grid"></div>
+          <div class="map-road-h" style="top:40%;"></div>
+          <div class="map-road-h" style="top:70%;"></div>
+          <div class="map-road-v" style="left:35%;"></div>
+          <div class="map-road-v" style="left:65%;"></div>
+          <!-- Property price pins -->
+          <div class="map-pin-wrap" style="top:20px; left:80px;">
+            <div class="map-pin-price active">₱2,200</div>
+            <div class="map-pin-tail active"></div>
+          </div>
+          <div class="map-pin-wrap" style="top:55px; left:160px;">
+            <div class="map-pin-price">₱1,800</div>
+            <div class="map-pin-tail"></div>
+          </div>
+          <div class="map-pin-wrap" style="top:30px; left:230px;">
+            <div class="map-pin-price">₱2,500</div>
+            <div class="map-pin-tail"></div>
+          </div>
+          <!-- Campus pin -->
+          <div class="campus-pin" style="bottom:10px; left:90px;">Hercor Gate</div>
+          <div class="map-label-bar">OpenStreetMap · Leaflet.js</div>
+        </div>
+
+        <!-- Map / List toggle -->
+        <div class="map-list-toggle" style="margin:0 14px 10px; flex-shrink:0;">
+          <div class="mlt-item active">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            List View
+          </div>
+          <div class="mlt-item">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+            Map View
+          </div>
+        </div>
+
+        <div class="scroll-area">
+          <div class="px-14 mb-8">
+            <div class="listing-card">
+              <div class="listing-card-img" style="height:76px;">
+                <span class="img-label">Property Photo</span>
+                <div class="save-btn">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                </div>
+                <div class="verified-bar">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#F5C842" stroke-width="2.5" stroke-linecap="round"><path d="M9 12l2 2 4-4"/><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  <span>Verified</span>
+                </div>
+              </div>
+              <div class="listing-card-body">
+                <div class="listing-card-title">Lawaan Student Haven</div>
+                <div class="listing-card-loc">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  350 m
+                  <span style="color:#F59E0B; font-size:10px;">★★★★☆</span>
+                  4.4 (14)
+                </div>
+                <div class="listing-card-price">₱2,200 <span class="price-unit">/ mo</span></div>
+                <div class="listing-card-badges">
+                  <span class="badge badge-green">Flood: Low</span>
+                  <span class="badge badge-blue">CAPELCO</span>
+                  <span class="badge badge-green">BFP</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="px-14 mb-8">
+            <div class="listing-card">
+              <div class="listing-card-img" style="height:76px; background:#E0E7FF;">
+                <span class="img-label">Property Photo</span>
+                <div class="save-btn">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+                </div>
+              </div>
+              <div class="listing-card-body">
+                <div class="listing-card-title">Casa Verde Bedspace</div>
+                <div class="listing-card-loc">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  420 m
+                  <span style="color:#F59E0B; font-size:10px;">★★★★★</span>
+                  4.8 (6)
+                </div>
+                <div class="listing-card-price">₱1,500 <span class="price-unit">/ mo · bedspace</span></div>
+                <div class="listing-card-badges">
+                  <span class="badge badge-green">Flood: Low</span>
+                  <span class="badge badge-blue">CAPELCO</span>
+                  <span class="badge badge-amber">BFP Pending</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="app-tabbar">
+          <div class="tab-item active">
+            <div class="tab-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+            <span class="tab-label">Search</span>
+          </div>
+          <div class="tab-item">
+            <div class="tab-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg></div>
+            <span class="tab-label">Map</span>
+          </div>
+          <div class="tab-item">
+            <div class="tab-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+            <span class="tab-label">Saved</span>
+          </div>
+          <div class="tab-item">
+            <div class="tab-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <span class="tab-label">Profile</span>
+          </div>
+        </div>
+      </div>
+      <div class="device-home-indicator"><span></span></div>
+    </div>
+  </div>
+
+  <!-- Annotation -->
+  <div class="annotation">
+    <div class="annotation-card">
+      <h4><span class="a-dot"></span>Flow A — Design Notes</h4>
+      <ul>
+        <li>Search requires zero login — students browse anonymously</li>
+        <li>Campus selector defaults to Hercor Lawaan (primary segment)</li>
+        <li>Search pill collapses on scroll (Airbnb pattern)</li>
+        <li>Category chips are bedspace-aware, not generic rental categories</li>
+        <li>CAPELCO and BFP toggles are enabled by default — safety-first</li>
+        <li>Flood badge uses a 3-tier color system: Green / Amber / Red</li>
+        <li>Map uses price pins (not standard location pins) — Airbnb pattern</li>
+        <li>Save (heart) uses localStorage, no login required</li>
+      </ul>
+    </div>
+    <div class="callout">
+      <strong>Airbnb Influence:</strong> Pill search bar, category chip bar with icons, listing cards with image-first layout, save button overlay, map price pins, and progressive disclosure filter sheet.
+    </div>
+    <div class="callout" style="margin-top:8px;">
+      <strong>Dormy PH Influence:</strong> Bedspace-specific room type, verified badge bar, gender preference filter.
+    </div>
+  </div>
+
+</div><!-- /flow-row -->
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     FLOW B — LISTING DETAIL & CONTACT
+══════════════════════════════════════════════════════════════ -->
+<div class="section-header">
+  <span class="section-label">Flow B</span>
+  <span class="section-title">Listing Detail &amp; Contact</span>
+  <span class="section-desc">Detail View → Leave a Review</span>
+</div>
+
+<div class="flow-row">
+
+  <!-- ── SCREEN 05: LISTING DETAIL ── -->
+  <div class="flow-step">
+    <div class="screen-label"><span class="screen-number">05</span>Listing Detail</div>
+    <div class="device">
+      <div class="device-bar">
+        <span class="d-time">9:45</span>
+        <span class="d-pill"></span>
+        <div class="d-icons"></div>
+      </div>
+      <div class="device-screen">
+        <!-- Hero image -->
+        <div class="detail-hero">
+          <span class="img-placeholder-label">Photo Gallery — 8 images</span>
+          <div class="back-pill">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            Back
+          </div>
+          <div class="save-pill">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          </div>
+          <div class="carousel-nav">
+            <div class="c-dot active"></div>
+            <div class="c-dot"></div>
+            <div class="c-dot"></div>
+            <div class="c-dot"></div>
+          </div>
+        </div>
+
+        <div class="scroll-area">
+          <div class="content-pad">
+            <!-- Title + Verified -->
+            <div class="flex justify-between items-center mb-6">
+              <div>
+                <h2 style="font-size:15px; font-weight:800; color:var(--text-primary); margin-bottom:2px;">Lawaan Student Haven</h2>
+                <div class="listing-card-loc" style="margin-bottom:0;">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  350 m from Hercor Lawaan Gate · Lawaan
+                </div>
+              </div>
+              <span class="badge badge-blue">
+                <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 12l2 2 4-4"/><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Verified
+              </span>
+            </div>
+
+            <!-- Badges -->
+            <div class="flex gap-4 mb-10" style="flex-wrap:wrap;">
+              <span class="badge badge-green">Flood: Low</span>
+              <span class="badge badge-blue">CAPELCO Rate</span>
+              <span class="badge badge-green">BFP Cleared</span>
+              <span class="badge badge-neutral">Women Only</span>
+            </div>
+
+            <!-- Price block -->
+            <div class="price-block mb-10">
+              <div>
+                <div class="pb-price">₱2,200 <span style="font-size:11px; font-weight:400; color:var(--text-muted);">/ month</span></div>
+                <div class="pb-unit">Water included · Electricity billed at CAPELCO rate</div>
+              </div>
+              <div style="text-align:right;">
+                <div style="color:#F59E0B; font-size:12px;">★★★★☆</div>
+                <div style="font-size:10px; color:var(--text-muted);">4.4 · 14 reviews</div>
+              </div>
+            </div>
+
+            <!-- Safety Compliance Card — BalayCapiz core feature -->
+            <div class="safety-card mb-10">
+              <div class="safety-card-header">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <span class="sc-title">Safety &amp; Compliance Summary</span>
+              </div>
+              <div class="safety-row">
+                <div class="sr-label">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                  Electricity Rate
+                </div>
+                <span class="badge badge-green">≈ ₱11/kWh · CAPELCO</span>
+              </div>
+              <div class="safety-row">
+                <div class="sr-label">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                  Flood Risk (Monsoon)
+                </div>
+                <span class="badge badge-green">Low Risk</span>
+              </div>
+              <div class="safety-row">
+                <div class="sr-label">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  BFP Fire Clearance
+                </div>
+                <span class="badge badge-green">
+                  <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  Uploaded
+                </span>
+              </div>
+              <div class="safety-row">
+                <div class="sr-label">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                  Gate Security
+                </div>
+                <span class="badge badge-green">24/7 Lock</span>
+              </div>
+              <div class="safety-row">
+                <div class="sr-label">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 20H4a2 2 0 01-2-2V6a2 2 0 012-2h3.9a2 2 0 011.7.9l.8 1.2a2 2 0 001.7.9H20a2 2 0 012 2v2"/><circle cx="18" cy="18" r="3"/><path d="M18 14v1M18 21v1M14 18h1M21 18h1"/></svg>
+                  Fire Exit Present
+                </div>
+                <span class="badge badge-green">
+                  <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  Confirmed
+                </span>
+              </div>
+            </div>
+
+            <!-- Amenities -->
+            <div class="screen-section-label" style="padding:0 0 8px;">Amenities</div>
+            <div class="amenity-grid mb-10">
+              <div class="amenity-item">
+                <svg class="a-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12.55a11 11 0 0114.08 0M1.42 9a16 16 0 0121.16 0M8.53 16.11a6 6 0 016.95 0M12 20h.01"/></svg>
+                Wi-Fi
+              </div>
+              <div class="amenity-item">
+                <svg class="a-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9h18M3 15h18M3 9a9 9 0 0018 0M3 15a9 9 0 0018 0M12 3v18"/></svg>
+                Kitchen
+              </div>
+              <div class="amenity-item">
+                <svg class="a-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 16.5c0 1.5-1 3-1 4.5h12c0-1.5-1-3-1-4.5M12 4v5M5 8c1 2 2 3 7 3s6-1 7-3"/></svg>
+                Laundry
+              </div>
+              <div class="amenity-item">
+                <svg class="a-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+                Study Area
+              </div>
+              <div class="amenity-item">
+                <svg class="a-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                Private C.R.
+              </div>
+              <div class="amenity-item">
+                <svg class="a-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg>
+                Water Tank
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Landlord -->
+            <div class="screen-section-label" style="padding:8px 0 6px;">About the Landlord</div>
+            <div class="landlord-strip mb-10">
+              <div class="landlord-avatar">EV</div>
+              <div>
+                <div class="ll-name">Mrs. E. Villanueva</div>
+                <div class="ll-meta">Landlord since 2019 · 3 active listings</div>
+                <div class="ll-verified">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 12l2 2 4-4M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  KYC Verified Landlord
+                </div>
+              </div>
+            </div>
+
+            <!-- Mini map -->
+            <div class="screen-section-label" style="padding:0 0 6px;">Location</div>
+            <div class="map-placeholder mb-10" style="height:90px;">
+              <div class="map-grid"></div>
+              <div class="map-road-h" style="top:50%;"></div>
+              <div class="map-road-v" style="left:50%;"></div>
+              <div class="map-pin-wrap" style="top:12px; left:80px;">
+                <div class="map-pin-price active">Property</div>
+                <div class="map-pin-tail active"></div>
+              </div>
+              <div class="campus-pin" style="top:8px; right:10px;">Hercor Gate</div>
+              <div class="map-label-bar">↔ 350 m</div>
+            </div>
+
+            <!-- Reviews -->
+            <div class="screen-section-label" style="padding:0 0 8px;">Student Reviews</div>
+            <div class="content-gap-sm mb-10">
+              <div class="review-card">
+                <div class="review-header">
+                  <div class="reviewer-info">
+                    <div class="reviewer-avatar">MS</div>
+                    <div>
+                      <div class="reviewer-name">Maria S.</div>
+                      <div class="reviewer-tenant">Verified Tenant</div>
+                    </div>
+                  </div>
+                  <div class="star-row">
+                    <svg class="star-fill" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg class="star-fill" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg class="star-fill" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg class="star-fill" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg class="star-fill" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                  </div>
+                </div>
+                <div class="review-text">"Clean room, fair electricity rate. Very close to Hercor. Highly recommended."</div>
+              </div>
+              <div class="review-card">
+                <div class="review-header">
+                  <div class="reviewer-info">
+                    <div class="reviewer-avatar">JD</div>
+                    <div>
+                      <div class="reviewer-name">Juan D.</div>
+                      <div class="reviewer-tenant">Verified Tenant</div>
+                    </div>
+                  </div>
+                  <div class="star-row">
+                    <svg class="star-fill" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg class="star-fill" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg class="star-fill" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg class="star-fill" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <svg class="star-empty" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                  </div>
+                </div>
+                <div class="review-text">"No electricity surprises. Landlord is responsive. Room is on the smaller side but manageable."</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact CTA — tel: and sms: protocols -->
+        <div class="cta-bar">
+          <button class="btn btn-primary btn-md" style="flex:1;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+            Call Landlord
+          </button>
+          <button class="btn btn-gold btn-md" style="flex:1;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+            Send SMS
+          </button>
+          <button class="btn btn-ghost btn-md">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+            Map
+          </button>
+        </div>
+      </div>
+      <div class="device-home-indicator"><span></span></div>
+    </div>
+  </div>
+
+  <div class="flow-connector"><div class="arrow-line"></div></div>
+
+  <!-- ── SCREEN 06: LEAVE A REVIEW ── -->
+  <div class="flow-step">
+    <div class="screen-label"><span class="screen-number">06</span>Submit a Review</div>
+    <div class="device">
+      <div class="device-bar">
+        <span class="d-time">9:48</span>
+        <span class="d-pill"></span>
+        <div class="d-icons"></div>
+      </div>
+      <div class="device-screen">
+        <div class="app-navbar">
+          <div class="nav-back">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            Listing
+          </div>
+          <span class="nav-title">Write a Review</span>
+        </div>
+
+        <div class="scroll-area">
+          <div class="content-pad">
+            <div class="inline-notice notice-blue mb-10">
+              <svg class="notice-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Reviews require proof of tenancy to prevent false submissions. Your Student ID or rental receipt will be verified before publishing.
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Property</label>
+              <div style="padding:10px 12px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md); font-size:12px; font-weight:600; color:var(--text-primary);">Lawaan Student Haven · Lawaan, Roxas City</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Your Rating</label>
+              <div class="flex gap-6" style="padding:4px 0;">
+                <svg class="star-fill" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <svg class="star-fill" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <svg class="star-fill" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <svg class="star-fill" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <svg class="star-empty" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Review Title</label>
+              <input type="text" class="form-input" placeholder="e.g. Good location, fair utility billing" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Your Experience</label>
+              <textarea class="form-input" rows="3" placeholder="Share details about electricity billing, landlord responsiveness, safety, and overall stay quality..." style="resize:none; height:80px;"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Electricity Rate Experienced</label>
+              <input type="text" class="form-input" placeholder="e.g. ₱11.50 / kWh" />
+              <div class="form-hint">Helps other students verify CAPELCO compliance crowdsourced data.</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Proof of Tenancy <span class="req">*</span></label>
+              <div class="upload-box">
+                <div class="ub-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </div>
+                <div class="ub-label">Upload Student ID or Rental Receipt</div>
+                <div class="ub-hint">Photo is blurred before display — used for verification only. Reviewed within 24 hours.</div>
+              </div>
+              <div class="form-hint" style="margin-top:8px;">Landlords may post a reply under your review. The platform does not remove reviews without verification.</div>
+            </div>
+
+            <button class="btn btn-primary btn-lg">Submit Review</button>
+          </div>
+        </div>
+      </div>
+      <div class="device-home-indicator"><span></span></div>
+    </div>
+  </div>
+
+  <!-- Annotation -->
+  <div class="annotation">
+    <div class="annotation-card">
+      <h4><span class="a-dot"></span>Flow B — Design Notes</h4>
+      <ul>
+        <li>Safety card is BalayCapiz's core differentiator — absent from generic rental apps</li>
+        <li>Photo carousel follows AirBnb full-bleed, floating back/save button pattern</li>
+        <li>CTA bar uses native <code>tel:</code> and <code>sms:</code> protocols — no backend messaging server required</li>
+        <li>KYC Verified badge follows unidorms.ph trust-stack model</li>
+        <li>Reviews gated by tenancy proof — prevents defamatory or fabricated submissions</li>
+        <li>Electricity rate field enables crowdsourced CAPELCO compliance verification</li>
+        <li>Landlord Reply available per review (Q&amp;A defense requirement)</li>
+        <li>Map uses Leaflet.js + OpenStreetMap — zero cost, aligns with proposal stack</li>
+      </ul>
+    </div>
+    <div class="callout">
+      <strong>Anti-Fake Review System:</strong> Tenancy proof is required before a review is published. Landlords receive a reply box. Platform does not take unilateral action — consistent with the TrikeRoxas 3-report threshold principle.
+    </div>
+  </div>
+
+</div><!-- /flow-row -->
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     FLOW C — LANDLORD FLOW
+══════════════════════════════════════════════════════════════ -->
+<div class="section-header">
+  <span class="section-label">Flow C</span>
+  <span class="section-title">Landlord Portal</span>
+  <span class="section-desc">Dashboard → Listing Management</span>
+</div>
+
+<div class="flow-row">
+
+  <!-- ── SCREEN 07: LANDLORD DASHBOARD ── -->
+  <div class="flow-step">
+    <div class="screen-label"><span class="screen-number">07</span>Landlord Dashboard</div>
+    <div class="device">
+      <div class="device-bar">
+        <span class="d-time">9:41</span>
+        <span class="d-pill"></span>
+        <div class="d-icons"></div>
+      </div>
+      <div class="device-screen">
+        <div class="app-navbar">
+          <span class="nav-wordmark">BalayCapiz</span>
+          <span style="font-size:10px; color:rgba(255,255,255,0.4); font-weight:500;">Landlord Portal</span>
+          <div class="nav-icon-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+          </div>
+        </div>
+
+        <!-- Greeting -->
+        <div style="padding:12px 14px 10px; background:var(--white); border-bottom:1px solid var(--border); flex-shrink:0;">
+          <div style="font-size:11px; color:var(--text-muted); margin-bottom:2px;">Welcome back,</div>
+          <div style="font-size:15px; font-weight:800; color:var(--text-primary);">Mrs. Villanueva</div>
+        </div>
+
+        <div class="scroll-area">
+          <!-- KPI Cards -->
+          <div class="content-pad" style="padding-bottom:8px;">
+            <div class="dashboard-kpi-row">
+              <div class="kpi-card kpi-navy">
+                <div class="kpi-val">3</div>
+                <div class="kpi-label">Active Listings</div>
+              </div>
+              <div class="kpi-card kpi-green">
+                <div class="kpi-val">2</div>
+                <div class="kpi-label">Verified</div>
+              </div>
+              <div class="kpi-card kpi-amber">
+                <div class="kpi-val">12</div>
+                <div class="kpi-label">Days to Expiry</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Expiry alert -->
+          <div class="px-14 mb-10">
+            <div class="inline-notice notice-amber">
+              <svg class="notice-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <div><strong>Listing expiring soon:</strong> "Lawaan Student Haven" auto-archives in 12 days. Tap to renew.</div>
+            </div>
+          </div>
+
+          <div class="screen-section-label">My Listings</div>
+
+          <!-- Listing mgmt card 1 -->
+          <div class="px-14 mb-8">
+            <div class="mgmt-card">
+              <div class="mgmt-card-body">
+                <div class="flex justify-between items-center mb-6">
+                  <div class="mgmt-card-title">Lawaan Student Haven</div>
+                  <span class="badge badge-green">Active</span>
+                </div>
+                <div class="mgmt-card-sub">350 m · ₱2,200 / month</div>
+                <div class="flex gap-4 mb-6" style="margin-top:6px; flex-wrap:wrap;">
+                  <span class="badge badge-blue">CAPELCO</span>
+                  <span class="badge badge-green">BFP</span>
+                  <span class="badge badge-neutral">★ 4.4 (14)</span>
+                </div>
+                <div class="mgmt-card-expiry">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  Expires Oct 28, 2026 · 12 days remaining
+                </div>
+              </div>
+              <div class="mgmt-card-actions">
+                <button class="btn btn-outline btn-sm">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  Edit
+                </button>
+                <button class="btn btn-primary btn-sm">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+                  Renew (1 tap)
+                </button>
+                <button class="btn btn-ghost btn-sm" style="color:var(--red); border-color:#FECACA; flex:0; padding:6px 8px;">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Listing mgmt card 2 -->
+          <div class="px-14 mb-8">
+            <div class="mgmt-card">
+              <div class="mgmt-card-body">
+                <div class="flex justify-between items-center mb-6">
+                  <div class="mgmt-card-title">Room 2 — Annex Unit</div>
+                  <span class="badge badge-amber">Expiring Soon</span>
+                </div>
+                <div class="mgmt-card-sub">Lawaan · ₱1,800 / month · Bedspace</div>
+              </div>
+              <div class="mgmt-card-actions">
+                <button class="btn btn-outline btn-sm">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  Edit
+                </button>
+                <button class="btn btn-primary btn-sm">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+                  Renew
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Add new listing placeholder -->
+          <div class="add-listing-placeholder">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add New Listing
+          </div>
+        </div>
+
+        <div class="app-tabbar">
+          <div class="tab-item">
+            <div class="tab-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/></svg></div>
+            <span class="tab-label">Listings</span>
+          </div>
+          <div class="tab-item">
+            <div class="tab-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+            <span class="tab-label">Reviews</span>
+          </div>
+          <div class="tab-item active">
+            <div class="tab-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
+            <span class="tab-label">Dashboard</span>
+          </div>
+          <div class="tab-item">
+            <div class="tab-icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <span class="tab-label">Profile</span>
+          </div>
+        </div>
+      </div>
+      <div class="device-home-indicator"><span></span></div>
+    </div>
+  </div>
+
+  <div class="flow-connector"><div class="arrow-line"></div></div>
+
+  <!-- ── SCREEN 08: ADD / EDIT LISTING ── -->
+  <div class="flow-step">
+    <div class="screen-label"><span class="screen-number">08</span>Add / Edit Listing</div>
+    <div class="device">
+      <div class="device-bar">
+        <span class="d-time">9:43</span>
+        <span class="d-pill"></span>
+        <div class="d-icons"></div>
+      </div>
+      <div class="device-screen">
+        <div class="app-navbar">
+          <div class="nav-back">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            Dashboard
+          </div>
+          <span class="nav-title">New Listing</span>
+          <span style="font-size:11px; font-weight:700; color:var(--gold-light);">Save Draft</span>
+        </div>
+
+        <div class="scroll-area">
+          <div class="content-pad">
+
+            <!-- Photo upload -->
+            <div class="form-group">
+              <label class="form-label">Property Photos</label>
+              <div class="upload-box">
+                <div class="ub-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                </div>
+                <div class="ub-label">Upload up to 8 photos</div>
+                <div class="ub-hint">First photo becomes the cover image</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Property Name</label>
+              <input type="text" class="form-input" placeholder="e.g. Lawaan Student Haven" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Street Address</label>
+              <input type="text" class="form-input" placeholder="e.g. 12 Rizal St., Lawaan, Roxas City" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Nearest Campus</label>
+              <select class="form-input" style="padding:9px 10px;">
+                <option>Hercor Lawaan</option>
+                <option>CapSU Main</option>
+                <option>Filamer Christian University</option>
+              </select>
+            </div>
+
+            <div class="flex gap-8 mb-10">
+              <div style="flex:1;">
+                <label class="form-label">Monthly Rent (₱)</label>
+                <input type="text" class="form-input" placeholder="e.g. 2,200" style="margin-bottom:0;" />
+              </div>
+              <div style="flex:1;">
+                <label class="form-label">Room Type</label>
+                <select class="form-input" style="padding:9px 8px; margin-bottom:0;">
+                  <option>Bedspace</option>
+                  <option>Single Room</option>
+                  <option>Studio</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Safety & Compliance -->
+            <div class="filter-group-header" style="padding:0; margin-bottom:8px; border-bottom:1px solid var(--border); padding-bottom:6px;">Safety &amp; Compliance</div>
+
+            <div class="toggle-row">
+              <div class="toggle-label">
+                <svg class="t-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                CAPELCO Standard Rate
+              </div>
+              <div class="toggle on"></div>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-label">
+                <svg class="t-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                Flood Risk Level
+              </div>
+              <select class="filter-select"><option>Low</option><option>Medium</option><option>High</option></select>
+            </div>
+
+            <div class="form-group" style="margin-top:10px;">
+              <label class="form-label">BFP Fire Clearance Certificate <span class="req">*</span></label>
+              <div class="upload-box">
+                <div class="ub-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+                </div>
+                <div class="ub-label">Upload BFP Certificate PDF or Photo</div>
+                <div class="ub-hint">Verified by admin within 24 hrs. Listing shows "BFP Verified" badge after approval.</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Landlord Contact Number</label>
+              <input type="tel" class="form-input" placeholder="09XX-XXX-XXXX" />
+              <div class="form-hint">Used for direct call and SMS contact buttons shown to students. No in-app messaging required.</div>
+            </div>
+
+            <!-- Amenities -->
+            <div class="filter-group-header" style="padding:0; margin-bottom:8px; border-bottom:1px solid var(--border); padding-bottom:6px;">Amenities</div>
+
+            <div class="toggle-row">
+              <div class="toggle-label">
+                <svg class="t-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12.55a11 11 0 0114.08 0M1.42 9a16 16 0 0121.16 0M8.53 16.11a6 6 0 016.95 0M12 20h.01"/></svg>
+                Wi-Fi Included
+              </div>
+              <div class="toggle on"></div>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-label">
+                <svg class="t-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9h18M3 15h18M3 9a9 9 0 0018 0M3 15a9 9 0 0018 0M12 3v18"/></svg>
+                Kitchen Access
+              </div>
+              <div class="toggle"></div>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-label">
+                <svg class="t-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+                Study Area
+              </div>
+              <div class="toggle"></div>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-label">
+                <svg class="t-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                24/7 Gate Security
+              </div>
+              <div class="toggle on"></div>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-label">
+                <svg class="t-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 10-16 0"/></svg>
+                Women Only
+              </div>
+              <div class="toggle"></div>
+            </div>
+
+            <button class="btn btn-primary btn-lg" style="margin-top:16px;">Submit for Review</button>
+            <p style="font-size:10px; color:var(--text-muted); text-align:center; margin-top:8px; padding-bottom:12px;">Listing auto-archives after 30 days. Renew with a single tap from your dashboard.</p>
+          </div>
+        </div>
+      </div>
+      <div class="device-home-indicator"><span></span></div>
+    </div>
+  </div>
+
+  <!-- Annotation -->
+  <div class="annotation">
+    <div class="annotation-card">
+      <h4><span class="a-dot"></span>Flow C — Design Notes</h4>
+      <ul>
+        <li>3-metric KPI row: Active Listings, Verified count, Days to Expiry</li>
+        <li>30-day auto-expiry prevents stale listings (Q&amp;A defense mechanism)</li>
+        <li>1-tap Renew minimizes landlord friction for re-listing</li>
+        <li>BFP Certificate upload triggers an admin review before the badge appears publicly</li>
+        <li>CAPELCO toggle is a landlord declaration, cross-checked by student review data</li>
+        <li>Flood Risk is landlord-declared, cross-referenced with barangay flood maps</li>
+        <li>Contact number enables native <code>tel:</code> / <code>sms:</code> buttons — no chat backend needed</li>
+        <li>Pre-launch: admin team seeds 20–30 listings manually before public launch</li>
+      </ul>
+    </div>
+    <div class="callout">
+      <strong>Paabangan / Smapey Influence:</strong> Landlord dashboard with listing expiry tracking, vacancy management, and auto-archive modeled after Philippine boarding house management tools.
+    </div>
+    <div class="callout" style="margin-top:8px;">
+      <strong>Zero-Cost Architecture:</strong> All file storage (BFP certs, photos, Student IDs) uses Supabase free-tier Storage (1 GB). Hosting on Vercel free tier. Monthly cost: ₱0.00.
+    </div>
+  </div>
+
+</div><!-- /flow-row -->
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     LEGEND & DESIGN SYSTEM
+══════════════════════════════════════════════════════════════ -->
+<div class="section-header">
+  <span class="section-label">Design System</span>
+  <span class="section-title">Color Tokens &amp; Component Legend</span>
+</div>
+
+<div class="legend-section">
+  <!-- Color system -->
+  <div class="legend-block">
+    <h3>Color System</h3>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#111827; border:1px solid #111827;"></div>
+      Primary Navy — Navigation, CTA buttons, header
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#F5C842; border:1px solid #d4a200;"></div>
+      Capiz Gold — Accent, brand highlights, landlord CTA
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#F0FDF4; border:1px solid #86EFAC;"></div>
+      Safe / Verified Green — Passed safety checks
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#FFFBEB; border:1px solid #FCD34D;"></div>
+      Caution Amber — Medium risk, expiry warnings
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#FEF2F2; border:1px solid #FECACA;"></div>
+      Alert Red — High risk, destructive actions
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#EFF6FF; border:1px solid #BFDBFE;"></div>
+      Trust Blue — Verified badges, KYC status, notices
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#F9FAFB; border:1px solid #E5E7EB;"></div>
+      Neutral Surface — Cards, backgrounds
+    </div>
+  </div>
+
+  <!-- Icon system -->
+  <div class="legend-block">
+    <h3>Icon System — Inline SVG (Heroicons / Feather style)</h3>
+    <div class="legend-item">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      Location / Map Pin
+    </div>
+    <div class="legend-item">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Shield — Safety / BFP Verified
+    </div>
+    <div class="legend-item">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="2" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      Lightning — CAPELCO Electricity Rate
+    </div>
+    <div class="legend-item">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Wave / Activity — Flood Risk Indicator
+    </div>
+    <div class="legend-item">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+      Checkmark — Verified / Confirmed
+    </div>
+    <div class="legend-item">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      Heart — Save / Wishlist
+    </div>
+    <div class="legend-item">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+      Phone — Call Landlord (<code>tel:</code>)
+    </div>
+    <div class="legend-item">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      Chat Bubble — SMS Landlord (<code>sms:</code>)
+    </div>
+  </div>
+
+  <!-- Component reference -->
+  <div class="legend-block">
+    <h3>Component Reference</h3>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:var(--navy); border-radius:999px;"></div>
+      Search Pill — AirBnb-style collapsed search bar
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:var(--border); border-radius:4px;"></div>
+      Listing Card — Image-first, badge row, action buttons
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:var(--green-bg); border:1px solid var(--green-border);"></div>
+      Safety Card — BalayCapiz-unique compliance summary
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:var(--amber-bg); border:1px solid var(--amber-border);"></div>
+      Inline Notice — Warnings, expiry alerts, info banners
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#EEF2FF; border:1px solid #C7D2FE;"></div>
+      Map Placeholder — Leaflet.js + OpenStreetMap, price pins
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:var(--navy); border-radius:10px;"></div>
+      Toggle Switch — On = Navy, Off = Gray (#D1D5DB)
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     DOCUMENT FOOTER
+══════════════════════════════════════════════════════════════ -->
+<div class="doc-footer">
+  <strong style="color:var(--text-secondary);">Tech Stack</strong> — HTML / Tailwind CSS / React · Leaflet.js + OpenStreetMap · Supabase (PostgreSQL + File Storage) · Vercel free tier · <code>tel:</code> &amp; <code>sms:</code> protocols for contact · Monthly operating cost: ₱0.00
+  <br>
+  <strong style="color:var(--text-secondary);">Design References</strong> — Airbnb (search pill, listing cards, chip bar, map price pins) · Dormy PH / Suzy Rent (bedspace filters, verification tiers, landlord tools) · unidorms.ph (trust stack, KYC, campus proximity) · Paabangan (30-day auto-expiry, vacancy management)
+  <br>
+  <strong style="color:var(--text-secondary);">Project</strong> — Hercor College · Computer Science Department · FE101 Start-Up Tech-Based Proposal Activity · Instructor: Michelle S. Jamelarin · Group 4: Aldea · Tibudan · Dumaniel · Borro · Villa · September 2026
+</div>
+
+</body>
+</html>
