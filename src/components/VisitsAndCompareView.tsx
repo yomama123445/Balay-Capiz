@@ -54,14 +54,14 @@ export const VisitsAndCompareView: React.FC<VisitsAndCompareViewProps> = ({
       {/* Header & Sub-Navigation Segmented Control */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-5 border-b border-[#E5E0D8]">
         <div className="min-w-0">
-          <p className="text-[11px] sm:text-xs font-mono text-[#64748B] truncate">
-            STUDENT HOUSING PLANNER · SHORTLIST & ON-SITE VISIT CHECKLIST
+          <p className="text-xs font-semibold text-[#1D4ED8] tracking-tight truncate">
+            Shortlist Comparison & Room Inspection Planner
           </p>
           <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#0F172A] mt-1">
-            Saved Rooms & Viewing Itinerary
+            Saved Rooms & Viewing Schedule
           </h1>
           <p className="text-xs sm:text-sm text-[#475569] mt-1 max-w-2xl">
-            Compare your saved boarding houses with roommate rent splitting, or use the on-site inspection checklist when visiting properties in Lawaan, Tiza, and Roxas Ave.
+            Compare your saved properties side by side with roommate cost splitting, or use the on-site checklist during your room visit.
           </p>
         </div>
 

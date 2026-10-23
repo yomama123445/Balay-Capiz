@@ -49,7 +49,7 @@ export const RoxasMapView: React.FC<RoxasMapViewProps> = ({
     });
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors · BalayCapiz GIS',
+      attribution: '&copy; OpenStreetMap contributors · Tahan',
       maxZoom: 19,
     }).addTo(map);
 
@@ -168,14 +168,14 @@ export const RoxasMapView: React.FC<RoxasMapViewProps> = ({
       {/* Section Header + Responsive Controls */}
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-5 border-b border-[#E5E0D8]">
         <div className="min-w-0">
-          <p className="text-[11px] sm:text-xs font-mono text-[#64748B] tracking-tight truncate">
-            ROXAS CITY GIS · OPENSTREETMAP + LEAFLET.JS
+          <p className="text-xs font-semibold text-[#1D4ED8] tracking-tight truncate">
+            Interactive Campus Proximity & Street Elevation Map
           </p>
           <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#0F172A] mt-1">
-            Campus Proximity & Barangay Elevation Map
+            Explore Boarding Houses by Campus Gate
           </h1>
           <p className="text-xs sm:text-sm text-[#475569] mt-1 max-w-2xl">
-            Tap any price pin to inspect walking distance to campus gates, street flood elevation, and verified CAPELCO metering.
+            Select any price pin to inspect walking distance to university gates, street elevation above flood lines, and verified utility rates.
           </p>
         </div>
 

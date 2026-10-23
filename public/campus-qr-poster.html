@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BalayCapiz — Campus Bulletin Board QR Poster (A4 Print Ready)</title>
+  <title>Tahan — Campus Bulletin Board QR Poster (A4 Print Ready)</title>
   <style>
     :root {
       --navy: #0F172A;
@@ -40,12 +40,13 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
+      flex-wrap: wrap;
     }
     .toolbar button, .toolbar a {
       background: var(--gold);
       color: var(--navy);
       border: none;
-      padding: 10px 18px;
+      padding: 10px 16px;
       border-radius: 10px;
       font-weight: 700;
       font-size: 13px;
@@ -73,8 +74,7 @@
       font-weight: 700;
       padding: 6px 14px;
       border-radius: 999px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
     h1 {
       font-size: 42px;
@@ -116,11 +116,11 @@
       padding-bottom: 0;
     }
     .feature-kicker {
-      font-family: ui-monospace, monospace;
       font-size: 11px;
       font-weight: 700;
       color: var(--green);
       text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
     .feature-title {
       font-size: 17px;
@@ -174,7 +174,6 @@
       justify-content: space-between;
       font-size: 12px;
       color: var(--slate);
-      font-family: ui-monospace, monospace;
     }
     @media print {
       body {
@@ -195,98 +194,89 @@
 </head>
 <body>
   <div class="toolbar">
-    <span><strong>BalayCapiz Campus Poster</strong> — Ready for A4 printing at Hercor, CapSU &amp; Filamer gates</span>
+    <span><strong>Tahan Campus Poster</strong> — Print-ready A4 poster for university bulletin boards</span>
     <div style="display:flex; gap:10px;">
-      <a href="/">← Back to App</a>
+      <a href="/">← Back to Tahan</a>
+      <a href="/BalayCapiz-v1.0.0.apk" download="Tahan-v1.0.0.apk">Download Android APK (9.2 MB)</a>
       <button onclick="window.print()">Print Poster (A4 / PDF)</button>
     </div>
   </div>
 
   <div class="poster">
     <div>
-      <span class="header-badge">ROXAS CITY STUDENT HOUSING PORTAL · ₱0 BROKER FEE</span>
-      <h1>Stop Renting Blindly in Roxas City.</h1>
+      <span class="header-badge">TAHAN · VERIFIED STUDENT HOUSING &amp; UTILITY TRANSPARENCY</span>
+      <h1>Find a Safe, Honest Student Dorm on Tahan.</h1>
       <p class="subtitle">
-        Check verified boarding house rents, <strong>CAPELCO electricity rates (₱11.42/kWh baseline)</strong>,
-        <strong>BFP fire safety clearances</strong>, and <strong>street flood history</strong> before you pay a deposit.
+        Compare verified boarding house rents, <strong>real electric cooperative rates (₱11.42/kWh baseline)</strong>,
+        <strong>BFP fire safety clearances</strong>, and <strong>street flood profiles</strong> before paying a deposit.
       </p>
     </div>
 
     <div class="grid">
       <div class="features">
         <div class="feature-item">
-          <div class="feature-kicker">01 · UTILITY TRANSPARENCY</div>
+          <div class="feature-kicker">Utility Rate Transparency</div>
           <div class="feature-title">Avoid ₱20–₱25/kWh Sub-Meter Markups</div>
           <p class="feature-desc">
-            See which boarding houses charge the honest CAPELCO residential rate (~₱11.42/kWh) and calculate your true monthly cost with your fan, laptop, and rice cooker.
+            See which boarding houses pass through the official grid rate and calculate your true monthly cost with your fan, laptop, and rice cooker.
           </p>
         </div>
         <div class="feature-item">
-          <div class="feature-kicker">02 · VERIFIED SAFETY &amp; FLOOD ELEVATION</div>
+          <div class="feature-kicker">Verified Fire Safety &amp; Flood Profiles</div>
           <div class="feature-title">BFP Fire Cleared &amp; Typhoon-Tested</div>
           <p class="feature-desc">
-            Every listing displays BFP Fire Safety Inspection Certificate numbers, emergency exits, and historical monsoon flood elevation in Lawaan, Tiza, Banica &amp; Roxas Ave.
+            Every listing displays BFP Fire Safety Inspection Certificate numbers, emergency exits, and historical street flood elevation.
           </p>
         </div>
         <div class="feature-item">
-          <div class="feature-kicker">03 · ONE-TAP DIRECT LANDLORD CONTACT</div>
-          <div class="feature-title">Call or Text Nanay, Tatay, or Tita Directly</div>
+          <div class="feature-kicker">Direct Landlord Contact (₱0 Broker Fee)</div>
+          <div class="feature-title">Call or Text Property Owners Directly</div>
           <p class="feature-desc">
-            No middleman or broker commissions. Schedule a room inspection and use the built-in 4-point physical checklist on your phone.
+            Zero middleman commissions. Schedule a room viewing and use the built-in 4-point physical inspection checklist on your phone.
           </p>
         </div>
       </div>
 
       <div class="qr-card">
-        <div style="font-family: ui-monospace, monospace; font-size: 11px; color: var(--gold); font-weight: 700;">
-          WORKS ON ANY ANDROID OR IPHONE
+        <div style="font-size: 11px; color: var(--gold); font-weight: 700; letter-spacing: 0.05em;">
+          WEB APP · ANDROID APK · IPHONE
         </div>
         <div style="font-size: 20px; font-weight: 800; margin-top: 6px;">
-          Scan to Browse Rooms
+          Scan to Open Tahan
         </div>
 
-        <!-- High-Contrast Inline SVG QR Code pointing to App Root -->
         <div class="qr-box">
-          <svg viewBox="0 0 29 29" width="178" height="178" shape-rendering="crispEdges" aria-label="BalayCapiz QR Code">
+          <svg viewBox="0 0 29 29" width="178" height="178" shape-rendering="crispEdges" aria-label="Tahan QR Code">
             <rect width="29" height="29" fill="#FFFFFF"/>
-            <!-- Finder Patterns -->
             <path fill="#0F172A" d="M0,0h7v7h-7z M1,1v5h5v-5z M2,2h3v3h-3z M22,0h7v7h-7z M23,1v5h5v-5z M24,2h3v3h-3z M0,22h7v7h-7z M1,23v5h5v-5z M2,24h3v3h-3z"/>
-            <!-- Timing & Alignment Modules -->
             <path fill="#0F172A" d="M8,6h1v1h-1z M10,6h1v1h-1z M12,6h1v1h-1z M14,6h1v1h-1z M16,6h1v1h-1z M18,6h1v1h-1z M20,6h1v1h-1z M6,8h1v1h-1z M6,10h1v1h-1z M6,12h1v1h-1z M6,14h1v1h-1z M6,16h1v1h-1z M6,18h1v1h-1z M6,20h1v1h-1z"/>
             <path fill="#0F172A" d="M20,20h5v5h-5z M21,21v3h3v-3z M22,22h1v1h-1z"/>
-            <!-- Data Matrix Payload -->
             <path fill="#0F172A" d="M9,1h2v2h-2z M13,1h1v3h-1z M16,2h2v2h-2z M19,1h1v2h-1z M9,4h3v1h-3z M15,4h2v1h-2z M8,8h3v2h-3z M12,9h2v2h-2z M15,8h3v1h-3z M19,9h2v3h-2z M23,9h3v2h-3z M27,8h2v3h-2z M1,9h3v2h-3z M4,11h1v2h-1z M8,12h2v3h-2z M11,13h3v2h-3z M16,11h2v3h-2z M22,12h2v2h-2z M25,13h3v2h-3z M0,14h2v3h-2z M3,15h2v2h-2z M9,16h3v2h-3z M13,16h2v3h-2z M17,15h3v2h-3z M21,16h2v2h-2z M26,16h2v3h-2z M2,19h3v2h-3z M8,19h2v2h-2z M11,20h3v2h-3z M15,19h2v3h-2z M18,21h1v3h-1z M8,23h3v2h-3z M12,24h2v3h-2z M16,24h3v2h-3z M9,27h4v2h-4z M15,27h2v2h-2z M20,27h3v2h-3z M26,23h3v3h-3z M25,27h3v2h-3z"/>
           </svg>
         </div>
 
         <div style="font-family: ui-monospace, monospace; font-size: 13px; color: var(--gold); font-weight: 700;" id="poster-url">
-          https://balaycapiz.vercel.app
+          https://tahan.cheyngadgets.site
         </div>
         <p style="font-size: 12px; color: #CBD5E1; margin-top: 6px;">
-          Instant Web App &amp; Android Install · Offline Map &amp; Checklist Included
+          Works Offline · Free for Students &amp; Landlords
         </p>
       </div>
     </div>
 
     <div>
       <div class="campuses">
-        <span>✓ HERCOR LAWAAAN GATE</span>
-        <span>✓ CAPSU MAIN (FUENTES)</span>
-        <span>✓ FILAMER (ROXAS AVE)</span>
-        <span>✓ HERCOR RIVERSIDE</span>
+        <span>✓ HERCOR COLLEGE</span>
+        <span>✓ CAPSU MAIN</span>
+        <span>✓ FILAMER (FCU)</span>
+        <span>✓ NATIONWIDE UNIVERSITY HUBS</span>
       </div>
 
       <div class="footer">
-        <span>HERCOR COLLEGE · COMPUTER SCIENCE DEPT · FE101 CIVIC-TECH INITIATIVE</span>
-        <span>ROXAS CITY, CAPIZ · AY 2026–2027</span>
+        <span>TAHAN STUDENT HOUSING PLATFORM · ROXAS CITY PILOT</span>
+        <span>tahan.cheyngadgets.site</span>
       </div>
     </div>
   </div>
-
-  <script>
-    if (window.location.origin && !window.location.origin.startsWith('file')) {
-      document.getElementById('poster-url').textContent = window.location.origin;
-    }
-  </script>
 </body>
 </html>

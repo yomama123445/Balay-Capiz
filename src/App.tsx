@@ -8,8 +8,9 @@ import {
   BoardingHouseListing,
   CAMPUSES,
   CampusId,
-  CAPELCO_BASELINE_RATE_PHP,
   INITIAL_LISTINGS,
+  REGIONAL_HUBS,
+  RegionalHubId,
   RoomType,
   TenantReview,
 } from './data/roxasHousingData';
@@ -34,6 +35,7 @@ import {
   removeVisitFromCloud,
 } from './services/housingService';
 import {
+  formatCurrentDatePh,
   locateStudentPosition,
   UserLocationResult,
 } from './utils/nativeBridge';
@@ -62,9 +64,29 @@ const STORAGE_VISITS_KEY = 'balaycapiz_visits_v1';
 const STORAGE_KWH_KEY = 'balaycapiz_monthly_kwh_v1';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<ActiveTab>('explore');
-  const [selectedListingId, setSelectedListingId] = useState<string | null>(null);
+  const [selectedHubId, setSelectedHubId] = useState<RegionalHubId>('roxas-capiz');
+  const [activeTab, setActiveTab] = useState<ActiveTab>(() => {
+    if (typeof window === 'undefined') return 'explore';
+    const tabParam = new URLSearchParams(window.location.search).get('tab');
+    if (
+      tabParam === 'explore' ||
+      tabParam === 'map' ||
+      tabParam === 'visits' ||
+      tabParam === 'calculator' ||
+      tabParam === 'landlord'
+    ) {
+      return tabParam;
+    }
+    return 'explore';
+  });
+  const [selectedListingId, setSelectedListingId] = useState<string | null>(() => {
+    if (typeof window === 'undefined') return null;
+    return new URLSearchParams(window.location.search).get('room');
+  });
   const [isInstallModalOpen, setIsInstallModalOpen] = useState<boolean>(false);
+
+  const activeHub =
+    REGIONAL_HUBS.find((h) => h.id === selectedHubId) || REGIONAL_HUBS[0];
 
   const { isInstallable, isInstalled, isIOS, isInIframe, install } = usePWAInstall();
   const isOnline = useOnlineStatus();
@@ -367,6 +389,51 @@ export default function App() {
     removeVisitFromCloud(visitId);
   };
 
+  // Sync URL query parameters (?room=...&tab=...) for shareable deep links & browser Back button
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    if (selectedListingId) {
+      params.set('room', selectedListingId);
+      params.delete('tab');
+    } else {
+      params.delete('room');
+      if (activeTab !== 'explore') {
+        params.set('tab', activeTab);
+      } else {
+        params.delete('tab');
+      }
+    }
+    const nextSearch = params.toString();
+    const nextUrl = nextSearch ? `${window.location.pathname}?${nextSearch}` : window.location.pathname;
+    if (`${window.location.pathname}${window.location.search}` !== nextUrl) {
+      window.history.pushState({}, '', nextUrl);
+    }
+  }, [activeTab, selectedListingId]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const handlePopState = () => {
+      const params = new URLSearchParams(window.location.search);
+      const roomParam = params.get('room');
+      const tabParam = params.get('tab');
+      setSelectedListingId(roomParam);
+      if (
+        tabParam === 'explore' ||
+        tabParam === 'map' ||
+        tabParam === 'visits' ||
+        tabParam === 'calculator' ||
+        tabParam === 'landlord'
+      ) {
+        setActiveTab(tabParam);
+      } else if (!roomParam) {
+        setActiveTab('explore');
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
   const handleRenewListing = (listingId: string) => {
     setListings((prev) =>
       prev.map((item) => {
@@ -374,7 +441,7 @@ export default function App() {
         const updated = {
           ...item,
           daysUntilExpiry: 30,
-          lastUpdatedDate: 'October 23, 2026',
+          lastUpdatedDate: formatCurrentDatePh(),
         };
         pushSingleListingToCloud(updated);
         return updated;
@@ -419,7 +486,7 @@ export default function App() {
             const updatedReview: TenantReview = {
               ...r,
               landlordReply: {
-                respondedAt: 'October 23, 2026',
+                respondedAt: formatCurrentDatePh(),
                 message: replyMessage,
               },
             };
@@ -454,20 +521,34 @@ export default function App() {
           [Zone 1: 1-line Brand Wordmark] — [Zone 2: 5 Single-Line Nav Links] — [Zone 3: 1 Primary Action]
       ===================================================================== */}
       <header className="sticky top-0 z-40 bg-[#FAF8F5]/95 backdrop-blur-md border-b border-[#E5E0D8]">
-        <div className="max-w-[1360px] mx-auto px-3.5 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-3 lg:gap-8">
-          {/* Zone 1: Single text element wordmark */}
-          <button
-            type="button"
-            onClick={() => {
-              setSelectedListingId(null);
-              setActiveTab('explore');
-            }}
-            className="font-display text-lg sm:text-xl font-extrabold tracking-tight text-[#0F172A] whitespace-nowrap shrink-0 text-left"
-          >
-            BalayCapiz
-          </button>
+        <div className="max-w-[1360px] mx-auto px-3.5 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2 sm:gap-4 lg:gap-8">
+          {/* Zone 1: Brand Wordmark + Nationwide Regional Hub Switcher */}
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 shrink-0">
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedListingId(null);
+                setActiveTab('explore');
+              }}
+              className="font-display text-xl sm:text-2xl font-extrabold tracking-tight text-[#0F172A] whitespace-nowrap shrink-0 text-left"
+            >
+              Tahan
+            </button>
+            <select
+              value={selectedHubId}
+              onChange={(e) => setSelectedHubId(e.target.value as RegionalHubId)}
+              aria-label="Select university city hub"
+              className="min-h-[32px] px-2.5 py-1 rounded-lg bg-[#F3F0EA] border border-[#E5E0D8] text-[11px] sm:text-xs font-semibold text-[#0F172A] focus:outline-none cursor-pointer"
+            >
+              {REGIONAL_HUBS.map((hub) => (
+                <option key={hub.id} value={hub.id}>
+                  {hub.city} {hub.status === 'Active Pilot' ? '· Live' : '· Soon'}
+                </option>
+              ))}
+            </select>
+          </div>
 
-          {/* Zone 2: 5 concise single-line text navigation links (Desktop lg+) */}
+          {/* Zone 2: Navigation Links (Desktop lg+) */}
           <nav className="hidden lg:flex items-center gap-6 text-sm font-medium text-[#475569]">
             <button
               type="button"
@@ -495,7 +576,7 @@ export default function App() {
                   : 'border-transparent hover:text-[#0F172A]'
               }`}
             >
-              Map Radar
+              Campus Map
             </button>
             <button
               type="button"
@@ -537,11 +618,11 @@ export default function App() {
                   : 'border-transparent hover:text-[#0F172A]'
               }`}
             >
-              Landlord Studio
+              Host Portal
             </button>
           </nav>
 
-          {/* Zone 3: 1 primary action button (PWA Install & Field Data) */}
+          {/* Zone 3: Primary Action Button */}
           <div className="flex items-center shrink-0">
             <button
               type="button"
@@ -549,7 +630,7 @@ export default function App() {
               className="min-h-[40px] px-3 sm:px-4 py-2 text-xs font-semibold text-[#FAF8F5] bg-[#0F172A] rounded-xl hover:bg-[#1E293B] transition-colors flex items-center gap-1.5 whitespace-nowrap shrink-0"
             >
               <Download className="w-3.5 h-3.5 text-[#F5C842] shrink-0" />
-              <span>{isInstalled ? 'App & Data' : 'Install App'}</span>
+              <span>{isInstalled ? 'App & Data' : 'Get App'}</span>
             </button>
           </div>
         </div>
@@ -560,7 +641,7 @@ export default function App() {
         <div className="bg-[#FFFBEB] border-b border-[#FCD34D] px-4 py-2 text-center text-xs font-medium text-[#78350F] flex items-center justify-center gap-2">
           <WifiOff className="w-3.5 h-3.5 shrink-0" />
           <span>
-            Offline Mode — Using cached Roxas City boarding houses, saved shortlist, and map tiles.
+            Offline Mode — Browsing cached Tahan boarding houses, saved shortlist, and campus maps.
           </span>
         </div>
       )}
@@ -634,11 +715,11 @@ export default function App() {
               <div className="max-w-[1360px] mx-auto px-3.5 sm:px-6 lg:px-8 py-5 sm:py-7 space-y-4 sm:space-y-5">
                 <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-3.5 min-w-0">
                   <div className="min-w-0">
-                    <p className="text-[11px] sm:text-xs font-mono text-[#F5C842] tracking-wide">
-                      ROXAS CITY, CAPIZ · CAPELCO BASELINE ₱{CAPELCO_BASELINE_RATE_PHP}/kWh · ₱0 BROKER FEE
+                    <p className="text-xs font-semibold text-[#F5C842] tracking-wide">
+                      {activeHub.city}, {activeHub.provinceOrRegion} · {activeHub.utilityProviderShort} Grid Baseline ₱{activeHub.baselineKwhRatePhp.toFixed(2)}/kWh · Zero Broker Fee
                     </p>
                     <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight text-white mt-1">
-                      Where are you studying in Roxas City?
+                      Find verified student housing near your campus
                     </h1>
                   </div>
 
@@ -896,6 +977,28 @@ export default function App() {
 
             {/* ROOM FEED GRID */}
             <section className="max-w-[1360px] mx-auto px-3.5 sm:px-6 lg:px-8 py-5 sm:py-6">
+              {activeHub.status === 'Expansion Roadmap' && (
+                <div className="mb-6 bg-white border-2 border-[#1D4ED8] rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xs">
+                  <div className="space-y-1">
+                    <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#1D4ED8]">
+                      <span>Nationwide Expansion Hub · {activeHub.city}</span>
+                    </div>
+                    <h2 className="text-base sm:text-lg font-bold text-[#0F172A]">
+                      {activeHub.utilityProviderFull} Baseline: ₱{activeHub.baselineKwhRatePhp.toFixed(2)}/kWh
+                    </h2>
+                    <p className="text-xs text-[#475569]">
+                      Target University Corridor: <strong>{activeHub.partnerCampusesSummary}</strong>. Below is our active flagship pilot dataset in Roxas City demonstrating Tahan&apos;s verification model.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedHubId('roxas-capiz')}
+                    className="min-h-[40px] px-4 py-2 bg-[#0F172A] text-white text-xs font-semibold rounded-xl hover:bg-[#1E293B] shrink-0"
+                  >
+                    View Active Pilot (Roxas City)
+                  </button>
+                </div>
+              )}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
                 <div className="text-xs text-[#64748B] leading-relaxed">
                   Showing <strong className="text-[#0F172A]">{filteredListings.length}</strong> verified student rooms · True Monthly Total includes your{' '}
@@ -1097,7 +1200,7 @@ export default function App() {
                           </a>
                           <a
                             href={`sms:${cleanPhone}?body=${encodeURIComponent(
-                              `Maayong adlaw ${listing.landlordLocalCallName}! Saw ${listing.title} on BalayCapiz. Is a slot still available?`
+                              `Maayong adlaw ${listing.landlordLocalCallName}! Saw ${listing.title} on Tahan (tahan.cheyngadgets.site). Is a slot still available?`
                             )}`}
                             aria-label={`Send SMS to ${listing.landlordLocalCallName}`}
                             className="min-h-[42px] py-2 px-3 bg-white border border-[#E5E0D8] text-[#0F172A] text-xs font-medium rounded-xl hover:bg-[#F3F0EA] transition-colors flex items-center gap-1 whitespace-nowrap shrink-0"
@@ -1178,7 +1281,7 @@ export default function App() {
           }`}
         >
           <MapPin className="w-5 h-5" />
-          <span className="text-[10px] tracking-tight mt-0.5 whitespace-nowrap">Map Radar</span>
+          <span className="text-[10px] tracking-tight mt-0.5 whitespace-nowrap">Map</span>
         </button>
 
         <button
@@ -1228,7 +1331,7 @@ export default function App() {
           }`}
         >
           <Building2 className="w-5 h-5" />
-          <span className="text-[10px] tracking-tight mt-0.5 whitespace-nowrap">Landlord</span>
+          <span className="text-[10px] tracking-tight mt-0.5 whitespace-nowrap">Host Portal</span>
         </button>
       </nav>
     </div>

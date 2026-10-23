@@ -1,3 +1,69 @@
+export type RegionalHubId = 'roxas-capiz' | 'iloilo-city' | 'bacolod-city' | 'metro-manila';
+
+export interface RegionalHubInfo {
+  id: RegionalHubId;
+  city: string;
+  provinceOrRegion: string;
+  status: 'Active Pilot' | 'Expansion Roadmap';
+  utilityProviderShort: string;
+  utilityProviderFull: string;
+  baselineKwhRatePhp: number;
+  partnerCampusesSummary: string;
+  centerLat: number;
+  centerLng: number;
+}
+
+export const REGIONAL_HUBS: RegionalHubInfo[] = [
+  {
+    id: 'roxas-capiz',
+    city: 'Roxas City',
+    provinceOrRegion: 'Capiz · Western Visayas',
+    status: 'Active Pilot',
+    utilityProviderShort: 'CAPELCO',
+    utilityProviderFull: 'Capiz Electric Cooperative (CAPELCO)',
+    baselineKwhRatePhp: 11.42,
+    partnerCampusesSummary: 'Hercor College (Lawaan & Riverside), CapSU Main, Filamer Christian University',
+    centerLat: 11.5725,
+    centerLng: 122.7545,
+  },
+  {
+    id: 'iloilo-city',
+    city: 'Iloilo City',
+    provinceOrRegion: 'Iloilo · Western Visayas',
+    status: 'Expansion Roadmap',
+    utilityProviderShort: 'MORE Power',
+    utilityProviderFull: 'MORE Electric and Power Corporation',
+    baselineKwhRatePhp: 10.85,
+    partnerCampusesSummary: 'UP Visayas (City Campus), West Visayas State University (WVSU), Central Philippine University (CPU)',
+    centerLat: 10.7202,
+    centerLng: 122.5621,
+  },
+  {
+    id: 'bacolod-city',
+    city: 'Bacolod City',
+    provinceOrRegion: 'Negros Occidental · NIR',
+    status: 'Expansion Roadmap',
+    utilityProviderShort: 'Negros Power',
+    utilityProviderFull: 'Negros Electric and Power Corp.',
+    baselineKwhRatePhp: 11.10,
+    partnerCampusesSummary: 'University of St. La Salle (USLS), UNO-R, Carlos Hilado Memorial State University',
+    centerLat: 10.6765,
+    centerLng: 122.9509,
+  },
+  {
+    id: 'metro-manila',
+    city: 'Metro Manila (U-Belt)',
+    provinceOrRegion: 'National Capital Region',
+    status: 'Expansion Roadmap',
+    utilityProviderShort: 'Meralco',
+    utilityProviderFull: 'Manila Electric Company (Meralco)',
+    baselineKwhRatePhp: 11.85,
+    partnerCampusesSummary: 'UST, FEU, UP Diliman, Ateneo, DLSU Taft',
+    centerLat: 14.6091,
+    centerLng: 120.9894,
+  },
+];
+
 export type CampusId = 'all' | 'hercor-lawaan' | 'capsu-main' | 'filamer' | 'hercor-riverside';
 
 export type RoomType = 'Bedspace' | 'Single Room' | 'Shared Room' | 'Studio w/ CR';

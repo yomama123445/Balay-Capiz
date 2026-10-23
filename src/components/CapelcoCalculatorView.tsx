@@ -75,20 +75,20 @@ export const CapelcoCalculatorView: React.FC<CapelcoCalculatorViewProps> = ({
       {/* Header */}
       <div className="pb-5 sm:pb-6 border-b border-[#E5E0D8] flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div className="min-w-0">
-          <p className="text-[11px] sm:text-xs font-mono text-[#64748B] truncate">
-            CAPELCO BASELINE: ₱{CAPELCO_BASELINE_RATE_PHP.toFixed(2)} / kWh (ROXAS CITY GRID)
+          <p className="text-xs font-semibold text-[#1D4ED8] tracking-tight">
+            Utility Rate Transparency · Local Grid Baseline ₱{CAPELCO_BASELINE_RATE_PHP.toFixed(2)}/kWh (CAPELCO)
           </p>
           <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#0F172A] mt-1">
-            Dorm Electricity & True Monthly Cost Planner
+            True Monthly Cost & Appliance Planner
           </h1>
           <p className="text-xs sm:text-sm text-[#475569] mt-1 max-w-2xl">
-            Toggle the appliances you bring to your boarding house. Your monthly kWh profile ({totalMonthlyKwh.toFixed(1)} kWh/mo) automatically syncs across all room cards in the app.
+            Select the appliances you plan to use in your room. Your estimated usage ({totalMonthlyKwh.toFixed(1)} kWh/mo) updates the total monthly cost across every listing on Tahan.
           </p>
         </div>
 
         <div className="w-full md:w-auto bg-white border border-[#E5E0D8] rounded-2xl px-4 py-3 flex md:block items-center justify-between md:text-right shrink-0">
           <div>
-            <div className="text-xs text-[#64748B]">Est. Semester Savings (5 mos)</div>
+            <div className="text-xs text-[#64748B]">Semester Savings (5 mos)</div>
             <div className="text-[11px] text-[#64748B] md:hidden">
               vs ₱{comparisonMarkupRate.toFixed(0)}/kWh sub-meter
             </div>
@@ -98,7 +98,7 @@ export const CapelcoCalculatorView: React.FC<CapelcoCalculatorViewProps> = ({
               ₱{Math.round(semesterSavings).toLocaleString()} saved
             </div>
             <div className="hidden md:block text-xs text-[#64748B]">
-              at CAPELCO rate vs ₱{comparisonMarkupRate.toFixed(0)}/kWh sub-meter
+              at grid rate vs ₱{comparisonMarkupRate.toFixed(0)}/kWh sub-meter
             </div>
           </div>
         </div>
@@ -111,10 +111,10 @@ export const CapelcoCalculatorView: React.FC<CapelcoCalculatorViewProps> = ({
           <div className="flex items-center justify-between gap-2">
             <h2 className="text-base sm:text-lg font-bold text-[#0F172A] flex items-center gap-2">
               <Calculator className="w-5 h-5 text-[#0F172A] shrink-0" />
-              <span>01. Your Dorm Appliances</span>
+              <span>Appliance Load Estimator</span>
             </h2>
-            <span className="text-xs font-mono tabular-nums text-[#475569] shrink-0">
-              {totalMonthlyKwh.toFixed(1)} kWh / mo
+            <span className="text-xs font-mono tabular-nums font-semibold text-[#0F172A] bg-[#F3F0EA] px-2.5 py-1 rounded-lg shrink-0">
+              {totalMonthlyKwh.toFixed(1)} kWh / month
             </span>
           </div>
 
@@ -154,7 +154,7 @@ export const CapelcoCalculatorView: React.FC<CapelcoCalculatorViewProps> = ({
                         {item.enabled ? `₱${itemMonthlyPhp}/mo` : '₱0/mo'}
                       </div>
                       <div className="text-[11px] font-mono tabular-nums text-[#64748B]">
-                        {item.enabled ? `${itemMonthlyKwh} kWh` : 'Off'}
+                        {item.enabled ? `${itemMonthlyKwh} kWh` : 'Not used'}
                       </div>
                     </div>
                   </div>
@@ -184,7 +184,7 @@ export const CapelcoCalculatorView: React.FC<CapelcoCalculatorViewProps> = ({
           <div className="bg-white border border-[#E5E0D8] rounded-2xl p-4 sm:p-5">
             <div className="flex items-center justify-between gap-2 mb-2">
               <span className="text-xs font-semibold text-[#0F172A]">
-                Compare vs. Marked-Up Sub-Meter Rate
+                Compare Against Marked-Up Sub-Meter Rate
               </span>
               <span className="text-xs font-mono tabular-nums font-bold text-[#B45309] shrink-0">
                 ₱{comparisonMarkupRate.toFixed(2)} / kWh
@@ -203,7 +203,7 @@ export const CapelcoCalculatorView: React.FC<CapelcoCalculatorViewProps> = ({
               <div className="p-3 bg-[#F0FDF4] rounded-xl border border-[#BBF7D0]">
                 <div className="text-[11px] text-[#14532D] flex items-center gap-1 font-medium">
                   <CheckCircle2 className="w-3.5 h-3.5 text-[#15803D] shrink-0" />
-                  CAPELCO Standard (₱{CAPELCO_BASELINE_RATE_PHP}/kWh)
+                  Standard Grid Rate (₱{CAPELCO_BASELINE_RATE_PHP}/kWh)
                 </div>
                 <div className="text-base sm:text-lg font-bold font-mono tabular-nums text-[#0F172A] mt-0.5">
                   ₱{Math.round(capelcoMonthlyBill).toLocaleString()} / mo
@@ -212,7 +212,7 @@ export const CapelcoCalculatorView: React.FC<CapelcoCalculatorViewProps> = ({
               <div className="p-3 bg-[#FFFBEB] rounded-xl border border-[#FDE68A]">
                 <div className="text-[11px] text-[#78350F] flex items-center gap-1 font-medium">
                   <AlertTriangle className="w-3.5 h-3.5 text-[#B45309] shrink-0" />
-                  Sub-meter Markup (₱{comparisonMarkupRate.toFixed(2)}/kWh)
+                  Marked-Up Sub-Meter (₱{comparisonMarkupRate.toFixed(2)}/kWh)
                 </div>
                 <div className="text-base sm:text-lg font-bold font-mono tabular-nums text-[#B45309] mt-0.5">
                   ₱{Math.round(markupMonthlyBill).toLocaleString()} / mo
@@ -222,15 +222,15 @@ export const CapelcoCalculatorView: React.FC<CapelcoCalculatorViewProps> = ({
           </div>
         </div>
 
-        {/* Right 6 Cols: True Monthly Cost Ledger Across All Roxas City Listings */}
+        {/* Right 6 Cols: True Monthly Cost Ledger Across All Listings */}
         <div className="lg:col-span-6 space-y-4 sm:space-y-5">
           <div className="flex items-center justify-between gap-2">
             <h2 className="text-base sm:text-lg font-bold text-[#0F172A] flex items-center gap-2">
               <Zap className="w-5 h-5 text-[#D97706] shrink-0" />
-              <span>02. True Monthly Cost by Dorm</span>
+              <span>True Monthly Cost by Property</span>
             </h2>
             <span className="text-xs text-[#64748B] hidden sm:inline">
-              Rent + Water + Electricity
+              Base Rent + Water + Electricity
             </span>
           </div>
 
@@ -264,7 +264,7 @@ export const CapelcoCalculatorView: React.FC<CapelcoCalculatorViewProps> = ({
                     onClick={() => onOpenListing(listing)}
                     className="min-h-[36px] px-3 py-1.5 rounded-xl bg-[#0F172A] text-white text-xs font-semibold flex items-center gap-1 shrink-0"
                   >
-                    Open
+                    Details
                     <ArrowUpRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
@@ -296,12 +296,12 @@ export const CapelcoCalculatorView: React.FC<CapelcoCalculatorViewProps> = ({
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-[#E5E0D8] bg-[#FAF8F5] text-[11px] font-mono text-[#64748B]">
-                    <th className="py-3 px-4">PROPERTY</th>
-                    <th className="py-3 px-3 text-right">BASE RENT</th>
-                    <th className="py-3 px-3 text-right">EST. ELEC + WATER</th>
-                    <th className="py-3 px-4 text-right">TRUE TOTAL</th>
-                    <th className="py-3 px-3 text-right">ACTION</th>
+                  <tr className="border-b border-[#E5E0D8] bg-[#FAF8F5] text-[11px] font-semibold text-[#64748B]">
+                    <th className="py-3 px-4">Property</th>
+                    <th className="py-3 px-3 text-right">Base Rent</th>
+                    <th className="py-3 px-3 text-right">Est. Utilities</th>
+                    <th className="py-3 px-4 text-right">True Monthly Total</th>
+                    <th className="py-3 px-3 text-right"></th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#E5E0D8] text-xs">
@@ -327,11 +327,11 @@ export const CapelcoCalculatorView: React.FC<CapelcoCalculatorViewProps> = ({
                       </td>
                       <td className="py-3.5 px-3 text-right font-mono tabular-nums text-[#475569]">
                         +₱{(elecPhp + waterPhp).toLocaleString()}
-                        <div className="text-[10px] text-[#64748B]">
-                          {waterPhp === 0 ? 'Water incl.' : '+₱135 MRWD'}
+                        <div className="text-[10px] font-sans text-[#64748B]">
+                          {waterPhp === 0 ? 'Water incl.' : '+₱135 water'}
                         </div>
                       </td>
-                      <td className="py-3.5 px-4 text-right font-mono tabular-nums font-bold text-sm text-[#0F172A]">
+                      <td className="py-3.5 px-4 text-right font-mono tabular-nums font-bold text-sm text-[#15803D]">
                         ₱{trueTotal.toLocaleString()}
                       </td>
                       <td className="py-3.5 px-3 text-right">
@@ -340,7 +340,7 @@ export const CapelcoCalculatorView: React.FC<CapelcoCalculatorViewProps> = ({
                           onClick={() => onOpenListing(listing)}
                           className="min-h-[36px] inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#F3F0EA] hover:bg-[#0F172A] hover:text-white text-[#0F172A] font-medium transition-colors whitespace-nowrap"
                         >
-                          Open
+                          View
                           <ArrowUpRight className="w-3.5 h-3.5" />
                         </button>
                       </td>

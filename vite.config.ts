@@ -24,10 +24,10 @@ export default defineConfig(() => {
         ],
         manifest: {
           id: '/',
-          name: 'BalayCapiz — Roxas City Student Housing Portal',
-          short_name: 'BalayCapiz',
+          name: 'Tahan — Verified Student Housing & Utility Transparency',
+          short_name: 'Tahan',
           description:
-            'Verified student boarding house and dormitory discovery app for Hercor College, CapSU Main, and Filamer Christian University in Roxas City, Capiz.',
+            'Discover verified student boarding houses and dormitories with transparent electricity rates, BFP fire safety clearances, and flood profiles.',
           dir: 'ltr',
           lang: 'en-PH',
           theme_color: '#0F172A',
@@ -42,19 +42,19 @@ export default defineConfig(() => {
             {
               name: 'Discover Rooms',
               short_name: 'Discover',
-              description: 'Browse verified boarding houses near Hercor, CapSU & Filamer',
+              description: 'Browse verified student boarding houses near campus',
               url: '/?tab=explore',
               icons: [{ src: '/pwa-192x192.png', sizes: '192x192' }],
             },
             {
-              name: 'CAPELCO Bill Planner',
+              name: 'Utility Bill Planner',
               short_name: 'Bill Planner',
-              description: 'Compute true monthly rent + CAPELCO electricity load',
+              description: 'Compute true monthly rent + grid electricity load',
               url: '/?tab=calculator',
               icons: [{ src: '/pwa-192x192.png', sizes: '192x192' }],
             },
             {
-              name: 'Campus Map Radar',
+              name: 'Campus Map',
               short_name: 'Map',
               description: 'Inspect 500m campus walking rings and flood elevation',
               url: '/?tab=map',
@@ -87,14 +87,14 @@ export default defineConfig(() => {
               sizes: '540x720',
               type: 'image/png',
               form_factor: 'narrow',
-              label: 'BalayCapiz Mobile Room Discovery in Roxas City',
+              label: 'Tahan Mobile Room Discovery',
             },
             {
               src: '/screenshot-desktop.png',
               sizes: '1280x720',
               type: 'image/png',
               form_factor: 'wide',
-              label: 'BalayCapiz Campus Map and CAPELCO Bill Planner',
+              label: 'Tahan Campus Map and Utility Bill Planner',
             },
           ],
         },
@@ -133,7 +133,7 @@ export default defineConfig(() => {
               urlPattern: /^https:\/\/[abc]\.tile\.openstreetmap\.org\/.*/i,
               handler: 'CacheFirst',
               options: {
-                cacheName: 'roxas-osm-tiles-cache',
+                cacheName: 'tahan-osm-tiles-cache',
                 expiration: {
                   maxEntries: 350,
                   maxAgeSeconds: 60 * 60 * 24 * 30,
@@ -192,10 +192,7 @@ export default defineConfig(() => {
       },
     },
     server: {
-      // HMR is disabled in AI Studio via DISABLE_HMR env var.
-      // Do not modify—file watching is disabled to prevent flickering during agent edits.
       hmr: process.env.DISABLE_HMR !== 'true',
-      // Disable file watching when DISABLE_HMR is true to save CPU during agent edits.
       watch: process.env.DISABLE_HMR === 'true' ? null : {},
     },
   };

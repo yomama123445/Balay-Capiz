@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">BalayCapiz</string>
-    <string name="title_activity_main">BalayCapiz</string>
+    <string name="app_name">Tahan</string>
+    <string name="title_activity_main">Tahan</string>
     <string name="package_name">ph.edu.hercor.balaycapiz</string>
     <string name="custom_url_scheme">ph.edu.hercor.balaycapiz</string>
 </resources>

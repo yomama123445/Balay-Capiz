@@ -6,7 +6,7 @@ import {
   fetchCloudDataset,
   syncLocalDatasetToCloud,
 } from '../services/housingService';
-import { getRuntimePlatform } from '../utils/nativeBridge';
+import { PRODUCTION_DOMAIN_URL } from '../utils/nativeBridge';
 import {
   Download,
   Smartphone,
@@ -16,7 +16,6 @@ import {
   Share,
   HardDriveDownload,
   Copy,
-  WifiOff,
   CheckCircle2,
   Database,
   RefreshCw,
@@ -64,8 +63,12 @@ export const InstallAndDataModal: React.FC<InstallAndDataModalProps> = ({
 
   if (!isOpen) return null;
 
-  const appUrl = window.location.origin;
-  const runtimePlatform = getRuntimePlatform();
+  const appUrl =
+    typeof window !== 'undefined' &&
+    window.location.hostname !== 'localhost' &&
+    !window.location.hostname.startsWith('127.')
+      ? window.location.origin
+      : PRODUCTION_DOMAIN_URL;
   const cloudConfigured = isSupabaseConfigured();
 
   const handleCopyUrl = () => {
@@ -76,8 +79,9 @@ export const InstallAndDataModal: React.FC<InstallAndDataModalProps> = ({
 
   const handleExportJson = () => {
     const payload = {
-      app: 'BalayCapiz',
+      app: 'Tahan',
       version: '1.0.0',
+      domain: PRODUCTION_DOMAIN_URL,
       exportedAt: new Date().toISOString(),
       listings,
       visits,
@@ -89,7 +93,7 @@ export const InstallAndDataModal: React.FC<InstallAndDataModalProps> = ({
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `balaycapiz-roxas-dataset-${new Date().toISOString().slice(0, 10)}.json`;
+    a.download = `tahan-housing-dataset-${new Date().toISOString().slice(0, 10)}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -107,10 +111,10 @@ export const InstallAndDataModal: React.FC<InstallAndDataModalProps> = ({
         if (Array.isArray(parsed.listings)) {
           onImportDataset(parsed);
           setImportStatus(
-            `Imported ${parsed.listings.length} boarding houses into BalayCapiz.`
+            `Imported ${parsed.listings.length} properties into Tahan.`
           );
         } else {
-          setImportStatus('Invalid file format: expected a BalayCapiz JSON export.');
+          setImportStatus('Invalid file format: expected a Tahan JSON export.');
         }
       } catch {
         setImportStatus('Could not parse JSON file.');
@@ -125,10 +129,10 @@ export const InstallAndDataModal: React.FC<InstallAndDataModalProps> = ({
     const res = await syncLocalDatasetToCloud(listings, visits);
     setIsSyncingCloud(false);
     if (res.error) {
-      setCloudStatus(`Cloud sync error: ${res.error}`);
+      setCloudStatus(`Sync error: ${res.error}`);
     } else {
       setCloudStatus(
-        `Synced ${res.syncedCount} Roxas City boarding houses & reviews to Supabase PostgreSQL.`
+        `Synced ${res.syncedCount} properties and reviews to cloud database.`
       );
     }
   };
@@ -139,17 +143,15 @@ export const InstallAndDataModal: React.FC<InstallAndDataModalProps> = ({
     const res = await fetchCloudDataset();
     setIsSyncingCloud(false);
     if (res.error) {
-      setCloudStatus(`Cloud fetch error: ${res.error}`);
+      setCloudStatus(`Fetch error: ${res.error}`);
     } else if (res.listings && res.listings.length > 0) {
       onImportDataset({
         listings: res.listings,
         visits: res.visits || undefined,
       });
-      setCloudStatus(
-        `Loaded ${res.listings.length} live boarding houses from Supabase.`
-      );
+      setCloudStatus(`Loaded ${res.listings.length} live properties from cloud.`);
     } else {
-      setCloudStatus('Supabase table is currently empty. Click "Push Local to Cloud" to seed it.');
+      setCloudStatus('Cloud database is currently empty. Click "Push Local to Cloud" to seed it.');
     }
   };
 
@@ -161,16 +163,16 @@ export const InstallAndDataModal: React.FC<InstallAndDataModalProps> = ({
           <div className="flex items-center gap-3 min-w-0">
             <img
               src="/pwa-192x192.png"
-              alt="BalayCapiz App Icon"
+              alt="Tahan App Icon"
               referrerPolicy="no-referrer"
               className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl border border-[#334155] shrink-0"
             />
             <div className="min-w-0">
-              <div className="text-[10px] sm:text-xs font-mono text-[#F5C842] truncate">
-                CROSS-PLATFORM APP ({runtimePlatform.toUpperCase()}) · OFFLINE-READY
+              <div className="text-xs font-medium text-[#F5C842] truncate">
+                tahan.cheyngadgets.site · Mobile & Desktop App
               </div>
               <h2 className="text-base sm:text-xl font-bold text-white mt-0.5 leading-snug">
-                Install BalayCapiz, Cloud Sync & Field Tools
+                Download Tahan & Manage Data
               </h2>
             </div>
           </div>
@@ -187,27 +189,27 @@ export const InstallAndDataModal: React.FC<InstallAndDataModalProps> = ({
 
         {/* Modal Body */}
         <div className="p-4 sm:p-6 space-y-5 overflow-y-auto flex-1">
-          {/* 1. Direct App Installation Section */}
+          {/* App Download & Installation Section */}
           <div className="bg-[#FAF8F5] border border-[#E5E0D8] rounded-2xl p-4 sm:p-5 space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
               <h3 className="text-sm sm:text-base font-bold text-[#0F172A] flex items-center gap-2">
                 <Smartphone className="w-5 h-5 text-[#1D4ED8] shrink-0" />
-                <span>01. Install on Android, iOS, Windows, or macOS</span>
+                <span>Get the Tahan App</span>
               </h3>
-              <span className="text-xs font-mono text-[#15803D] flex items-center gap-1 shrink-0">
+              <span className="text-xs font-medium text-[#15803D] flex items-center gap-1 shrink-0">
                 <CheckCircle2 className="w-3.5 h-3.5" />
-                Capacitor & PWA Ready
+                Works Offline
               </span>
             </div>
 
             {isInstalled ? (
               <div className="p-3.5 bg-[#F0FDF4] border border-[#86EFAC] rounded-xl text-xs text-[#14532D] font-medium">
-                BalayCapiz is currently running as an installed standalone application on your device.
+                Tahan is installed on your device with offline access to saved rooms and campus maps.
               </div>
             ) : isInstallable ? (
               <div className="space-y-3">
                 <p className="text-xs text-[#475569]">
-                  Your browser supports direct one-tap installation. Installing adds the BalayCapiz icon to your home screen / app launcher and caches Roxas City maps and listings for offline use.
+                  Add Tahan to your home screen for instant access to campus maps, saved shortlists, and utility calculators even without mobile data.
                 </p>
                 <button
                   type="button"
@@ -215,24 +217,24 @@ export const InstallAndDataModal: React.FC<InstallAndDataModalProps> = ({
                   className="w-full min-h-[46px] py-3 px-4 bg-[#0F172A] text-white text-xs font-bold rounded-xl hover:bg-[#1E293B] flex items-center justify-center gap-2"
                 >
                   <Download className="w-4 h-4 text-[#F5C842]" />
-                  Install BalayCapiz App Now
+                  Install Tahan App
                 </button>
               </div>
             ) : isIOS ? (
               <div className="space-y-2 text-xs text-[#334155] bg-white p-4 rounded-xl border border-[#E5E0D8]">
                 <div className="font-bold text-[#0F172A] flex items-center gap-1.5">
                   <Share className="w-4 h-4 text-[#1D4ED8]" />
-                  How to Install on iPhone / iPad (Safari):
+                  Install on iPhone or iPad (Safari):
                 </div>
                 <ol className="list-decimal list-inside space-y-1.5 text-[#475569]">
                   <li>
-                    Open this app URL in <strong>Safari</strong> on your iPhone or iPad.
+                    Open <strong>tahan.cheyngadgets.site</strong> in Safari.
                   </li>
                   <li>
-                    Tap the <strong>Share</strong> button at the bottom of Safari.
+                    Tap the <strong>Share</strong> icon at the bottom of the screen.
                   </li>
                   <li>
-                    Scroll down and tap <strong>Add to Home Screen</strong>.
+                    Select <strong>Add to Home Screen</strong>.
                   </li>
                 </ol>
               </div>
@@ -240,12 +242,12 @@ export const InstallAndDataModal: React.FC<InstallAndDataModalProps> = ({
               <div className="space-y-3 text-xs text-[#475569]">
                 {isInIframe && (
                   <div className="p-3.5 bg-[#FFFBEB] border border-[#FCD34D] rounded-xl text-[#78350F] leading-relaxed">
-                    <strong>Why the native install button isn&apos;t triggered inside the preview frame:</strong> Chrome and Android block PWA installation prompts inside embedded preview iframes for security. Open the direct App URL in a new browser tab on your phone or laptop to click <strong>Install BalayCapiz</strong> in the address bar!
+                    Open <strong>tahan.cheyngadgets.site</strong> directly in your mobile or desktop browser to install the standalone app or download the Android APK.
                   </div>
                 )}
 
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-white p-3 rounded-xl border border-[#E5E0D8]">
-                  <span className="font-mono text-[11px] text-[#0F172A] truncate">
+                  <span className="font-mono text-xs font-semibold text-[#0F172A] truncate">
                     {appUrl}
                   </span>
                   <button
@@ -256,55 +258,76 @@ export const InstallAndDataModal: React.FC<InstallAndDataModalProps> = ({
                     {copiedUrl ? (
                       <>
                         <Check className="w-3.5 h-3.5 text-[#4ADE80]" />
-                        Copied URL
+                        Copied Link
                       </>
                     ) : (
                       <>
                         <Copy className="w-3.5 h-3.5" />
-                        Copy App Link
+                        Copy Link
                       </>
                     )}
                   </button>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                  <div className="p-3 bg-white border border-[#E5E0D8] rounded-xl">
-                    <div className="font-bold text-[#0F172A]">On Android (APK or Chrome):</div>
-                    <p className="mt-1 text-[#64748B]">
-                      Open in Chrome → tap <strong>⋮ menu → Install app</strong>, or build the native APK via <code>npm run android:apk:debug</code>.
-                    </p>
+                  <div className="p-3.5 bg-white border border-[#E5E0D8] rounded-xl flex flex-col justify-between gap-2.5">
+                    <div>
+                      <div className="font-bold text-[#0F172A]">Android APK Installer</div>
+                      <p className="mt-1 text-[#64748B]">
+                        Download the native Android package directly or install from Chrome&apos;s menu.
+                      </p>
+                    </div>
+                    <a
+                      href="/BalayCapiz-v1.0.0.apk"
+                      download="Tahan-v1.0.0.apk"
+                      className="w-full min-h-[38px] px-3 py-2 bg-[#15803D] text-white text-xs font-bold rounded-lg hover:bg-[#166534] flex items-center justify-center gap-1.5"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      Download Android APK (9.2 MB)
+                    </a>
                   </div>
-                  <div className="p-3 bg-white border border-[#E5E0D8] rounded-xl">
-                    <div className="font-bold text-[#0F172A]">On Windows / Mac (Desktop):</div>
-                    <p className="mt-1 text-[#64748B]">
-                      Open the link in Chrome or Edge → click the <strong>Install icon</strong> in the right side of the address bar.
-                    </p>
+                  <div className="p-3.5 bg-white border border-[#E5E0D8] rounded-xl flex flex-col justify-between gap-2.5">
+                    <div>
+                      <div className="font-bold text-[#0F172A]">iOS, Windows & macOS</div>
+                      <p className="mt-1 text-[#64748B]">
+                        Install directly from Safari (Add to Home Screen) or click the Install icon in Chrome/Edge.
+                      </p>
+                    </div>
+                    <a
+                      href="/campus-qr-poster.html"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full min-h-[38px] px-3 py-2 bg-[#FEF3C7] border border-[#FDE68A] text-[#78350F] text-xs font-bold rounded-lg hover:bg-[#FDE68A] flex items-center justify-center gap-1.5"
+                    >
+                      <QrCode className="w-3.5 h-3.5" />
+                      View Campus QR Poster
+                    </a>
                   </div>
                 </div>
               </div>
             )}
           </div>
 
-          {/* 2. Supabase Cloud Database Synchronization */}
+          {/* Cloud Database Synchronization */}
           <div className="bg-white border border-[#E5E0D8] rounded-2xl p-4 sm:p-5 space-y-3">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
               <h3 className="text-sm sm:text-base font-bold text-[#0F172A] flex items-center gap-2">
                 <Database className="w-5 h-5 text-[#15803D] shrink-0" />
-                <span>02. Supabase PostgreSQL Cloud Sync</span>
+                <span>Cloud Database Sync</span>
               </h3>
               <span
-                className={`text-xs font-mono shrink-0 ${
-                  cloudConfigured ? 'text-[#15803D]' : 'text-[#B45309]'
+                className={`text-xs font-medium shrink-0 ${
+                  cloudConfigured ? 'text-[#15803D]' : 'text-[#64748B]'
                 }`}
               >
-                {cloudConfigured ? '● Cloud Connected' : '○ Local Offline-First Mode'}
+                {cloudConfigured ? '● Cloud Connected' : 'Local Storage Mode'}
               </span>
             </div>
 
             <p className="text-xs text-[#475569] leading-relaxed">
               {cloudConfigured
-                ? `Connected to ${SUPABASE_URL}. Changes to listings, student reviews, and visits sync automatically with offline caching.`
-                : 'Running on local device storage with zero-latency offline support. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in .env.local to enable live multi-device cloud sync.'}
+                ? `Connected to ${SUPABASE_URL}. Listings, verified reviews, and scheduled visits sync across devices automatically.`
+                : 'Changes are saved to your device storage for instant offline reliability. Connect Supabase credentials in .env.local to sync across multiple devices.'}
             </p>
 
             {cloudStatus && (
@@ -339,12 +362,12 @@ export const InstallAndDataModal: React.FC<InstallAndDataModalProps> = ({
             )}
           </div>
 
-          {/* 3. Field Survey Data Backup / Import (.JSON) & Campus QR Poster */}
+          {/* Dataset Backup / Import (.JSON) */}
           <div className="bg-[#FAF8F5] border border-[#E5E0D8] rounded-2xl p-4 sm:p-5 space-y-3">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
               <h3 className="text-sm sm:text-base font-bold text-[#0F172A] flex items-center gap-2">
                 <HardDriveDownload className="w-5 h-5 text-[#0F172A] shrink-0" />
-                <span>03. Field Survey Dataset (.JSON) & Campus QR Poster</span>
+                <span>Dataset Backup & Field Import</span>
               </h3>
               <span className="text-xs font-mono text-[#64748B] shrink-0">
                 {listings.length} properties loaded
@@ -352,7 +375,7 @@ export const InstallAndDataModal: React.FC<InstallAndDataModalProps> = ({
             </div>
 
             <p className="text-xs text-[#475569] leading-relaxed">
-              Surveyed real boarding houses in Lawaan, Fuentes Drive, or Roxas Ave? Export your dataset as a <code>.json</code> file or print the official QR poster for university bulletin boards.
+              Export your surveyed boarding house dataset as a <code>.json</code> file to share with your team or restore on another device.
             </p>
 
             {importStatus && (
@@ -380,21 +403,11 @@ export const InstallAndDataModal: React.FC<InstallAndDataModalProps> = ({
                 Import Dataset (.json)
               </button>
 
-              <a
-                href="/campus-qr-poster.html"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full sm:w-auto min-h-[42px] px-4 py-2 bg-[#FEF3C7] border border-[#FDE68A] text-[#78350F] text-xs font-bold rounded-xl hover:bg-[#FDE68A] flex items-center justify-center gap-1.5"
-              >
-                <QrCode className="w-3.5 h-3.5" />
-                Print Campus QR Poster
-              </a>
-
               <button
                 type="button"
                 onClick={() => {
                   onResetDefaultDataset();
-                  setImportStatus('Restored default Roxas City dataset.');
+                  setImportStatus('Restored default dataset.');
                 }}
                 className="w-full sm:w-auto min-h-[42px] px-3 py-2 text-xs font-medium text-[#64748B] hover:text-[#B91C1C] text-center"
               >
@@ -408,21 +421,6 @@ export const InstallAndDataModal: React.FC<InstallAndDataModalProps> = ({
                 onChange={handleFileChange}
                 className="hidden"
               />
-            </div>
-          </div>
-
-          {/* 4. Offline Capabilities Indicator */}
-          <div className="bg-white border border-[#E5E0D8] rounded-2xl p-4 flex items-start gap-3 text-xs">
-            <div className="w-9 h-9 rounded-xl bg-[#F0FDF4] text-[#15803D] flex items-center justify-center shrink-0">
-              <WifiOff className="w-4 h-4" />
-            </div>
-            <div className="min-w-0">
-              <div className="font-bold text-[#0F172A]">
-                Offline-First Service Worker Enabled
-              </div>
-              <p className="text-[#64748B] mt-0.5 leading-relaxed">
-                Workbox automatically precaches the app shell, typography, and visited OpenStreetMap tiles of Roxas City so students can review saved rooms, inspection checklists, and landlord phone numbers even without mobile data.
-              </p>
             </div>
           </div>
         </div>

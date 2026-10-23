@@ -8,6 +8,7 @@ import {
   RoomType,
 } from '../data/roxasHousingData';
 import { ScheduledVisit } from '../types/appTypes';
+import { formatCurrentDatePh } from '../utils/nativeBridge';
 import {
   RotateCcw,
   Plus,
@@ -21,6 +22,8 @@ import {
   Calendar,
   Phone,
   MessageSquare,
+  Lock,
+  LogOut,
 } from 'lucide-react';
 
 interface LandlordPortalViewProps {
@@ -44,6 +47,16 @@ export const LandlordPortalView: React.FC<LandlordPortalViewProps> = ({
   onReplyToReview,
   onOpenListing,
 }) => {
+  const [isHostVerified, setIsHostVerified] = useState<boolean>(() => {
+    try {
+      return sessionStorage.getItem('tahan_host_verified') === 'true';
+    } catch {
+      return false;
+    }
+  });
+  const [hostPhoneInput, setHostPhoneInput] = useState<string>('0917-542-8810');
+  const [hostPinInput, setHostPinInput] = useState<string>('');
+
   const [activeSubTab, setActiveSubTab] = useState<'dashboard' | 'visits' | 'new-listing'>(
     'dashboard'
   );
@@ -72,6 +85,7 @@ export const LandlordPortalView: React.FC<LandlordPortalViewProps> = ({
     'Elevated concrete driveway above Lawaan highway drainage; dry during 2025 monsoon.'
   );
   const [bfpUploaded, setBfpUploaded] = useState<boolean>(false);
+  const [bfpFileName, setBfpFileName] = useState<string>('');
   const [bfpCertCode] = useState('FSIC-R6-RXS-2026-0719');
   const [landlordName, setLandlordName] = useState('Mrs. Elena Villanueva');
   const [landlordCallName, setLandlordCallName] = useState('Nanay Elena');
@@ -81,6 +95,42 @@ export const LandlordPortalView: React.FC<LandlordPortalViewProps> = ({
   const [hasKitchenAccess, setHasKitchenAccess] = useState<boolean>(true);
   const [hasPrivateCR, setHasPrivateCR] = useState<boolean>(false);
   const [gateSecurity] = useState('24/7 Steel Gate Lock + Caretaker');
+
+  const handleHostLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!hostPhoneInput.trim()) return;
+    setIsHostVerified(true);
+    try {
+      sessionStorage.setItem('tahan_host_verified', 'true');
+    } catch {
+      // Ignore storage error
+    }
+  };
+
+  const handleQuickDemoHostAccess = () => {
+    setIsHostVerified(true);
+    try {
+      sessionStorage.setItem('tahan_host_verified', 'true');
+    } catch {
+      // Ignore storage error
+    }
+  };
+
+  const handleHostSignOut = () => {
+    setIsHostVerified(false);
+    try {
+      sessionStorage.removeItem('tahan_host_verified');
+    } catch {
+      // Ignore storage error
+    }
+  };
+
+  const handleBfpFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setBfpUploaded(true);
+    setBfpFileName(`${file.name} (${Math.max(1, Math.round(file.size / 1024))} KB)`);
+  };
 
   const handleRenew = (id: string) => {
     onRenewListing(id);
@@ -125,7 +175,7 @@ export const LandlordPortalView: React.FC<LandlordPortalViewProps> = ({
       elevationMetersAboveStreet: elevationMeters,
       bfpVerified: true,
       bfpCertNumber: bfpCertCode,
-      bfpInspectionDate: 'October 22, 2026',
+      bfpInspectionDate: formatCurrentDatePh(),
       fireExtinguishersCount: 3,
       hasDedicatedFireExit: true,
       gateSecurity,
@@ -151,9 +201,9 @@ export const LandlordPortalView: React.FC<LandlordPortalViewProps> = ({
       landlordSinceYear: 2022,
       landlordPhone,
       landlordKycVerified: true,
-      landlordResponseNote: 'Direct SMS or phone call via BalayCapiz native protocol',
+      landlordResponseNote: 'Direct SMS or phone call via Tahan',
       daysUntilExpiry: 30,
-      lastUpdatedDate: 'October 22, 2026',
+      lastUpdatedDate: formatCurrentDatePh(),
       visualPalette: {
         roofColor: '#0F172A',
         wallColor: '#FAF8F5',
@@ -174,19 +224,98 @@ export const LandlordPortalView: React.FC<LandlordPortalViewProps> = ({
   const totalAvailableBeds = listings.reduce((sum, l) => sum + l.availableSlots, 0);
   const pendingVisitsCount = visits.filter((v) => v.status === 'Pending Landlord').length;
 
+  if (!isHostVerified) {
+    return (
+      <div className="max-w-lg mx-auto px-4 py-12 sm:py-16 pb-24">
+        <div className="bg-white border border-[#E5E0D8] rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
+          <div className="flex items-center gap-3">
+            <div className="w-11 h-11 rounded-2xl bg-[#0F172A] text-[#F5C842] flex items-center justify-center shrink-0">
+              <Lock className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="text-xs font-semibold text-[#1D4ED8]">Tahan Host Portal</div>
+              <h1 className="text-xl font-bold text-[#0F172A]">Property Owner Sign-In</h1>
+            </div>
+          </div>
+
+          <p className="text-xs sm:text-sm text-[#475569] leading-relaxed">
+            To protect boarding house availability and utility disclosures from unauthorized edits, property management is restricted to verified landlords and dormitory managers.
+          </p>
+
+          <form onSubmit={handleHostLogin} className="space-y-4">
+            <div>
+              <label className="block text-xs font-semibold text-[#0F172A] mb-1">
+                Registered Landlord Mobile Number
+              </label>
+              <input
+                type="tel"
+                required
+                value={hostPhoneInput}
+                onChange={(e) => setHostPhoneInput(e.target.value)}
+                placeholder="0917-542-8810"
+                className="w-full min-h-[42px] px-3.5 py-2 text-xs font-mono bg-[#FAF8F5] border border-[#CBD5E1] rounded-xl focus:outline-none focus:border-[#0F172A]"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-[#0F172A] mb-1">
+                Host Access PIN / Verification Code
+              </label>
+              <input
+                type="password"
+                value={hostPinInput}
+                onChange={(e) => setHostPinInput(e.target.value)}
+                placeholder="Enter 4-digit host PIN"
+                className="w-full min-h-[42px] px-3.5 py-2 text-xs bg-[#FAF8F5] border border-[#CBD5E1] rounded-xl focus:outline-none focus:border-[#0F172A]"
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full min-h-[44px] py-2.5 px-4 bg-[#0F172A] text-white text-xs font-bold rounded-xl hover:bg-[#1E293B] transition-colors"
+            >
+              Unlock Host Portal
+            </button>
+          </form>
+
+          <div className="pt-4 border-t border-[#E5E0D8] flex items-center justify-between gap-2">
+            <span className="text-[11px] text-[#64748B]">Evaluating Tahan for a pitch or demo?</span>
+            <button
+              type="button"
+              onClick={handleQuickDemoHostAccess}
+              className="text-xs font-bold text-[#1D4ED8] hover:underline"
+            >
+              Enter Demo Host Session →
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8 pb-24 lg:pb-12">
       {/* Header + Sub-navigation */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-5 sm:pb-6 border-b border-[#E5E0D8]">
         <div className="min-w-0">
-          <p className="text-[11px] sm:text-xs font-mono text-[#64748B] truncate">
-            LANDLORD STUDIO · 30-DAY VACANCY RENEWAL & VIEWING REQUESTS
-          </p>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-semibold text-[#15803D]">
+              ● Verified Host Session
+            </span>
+            <button
+              type="button"
+              onClick={handleHostSignOut}
+              className="text-xs text-[#64748B] hover:text-[#0F172A] inline-flex items-center gap-1"
+            >
+              <LogOut className="w-3 h-3" />
+              Lock Portal
+            </button>
+          </div>
           <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#0F172A] mt-1">
             Property Inventory & Student Inquiries
           </h1>
           <p className="text-xs sm:text-sm text-[#475569] mt-1 max-w-2xl">
-            Manage available bedspace slots, confirm student viewing appointments, reply to verified tenant reviews, and renew listings for another 30-day active window.
+            Manage open bedspace slots, confirm viewing appointments, reply to verified tenant reviews, and renew active listings.
           </p>
         </div>
 
@@ -813,35 +942,54 @@ export const LandlordPortalView: React.FC<LandlordPortalViewProps> = ({
               </div>
             </div>
 
-            <div>
-              <label className="block text-xs font-semibold text-[#0F172A] mb-1">
-                BFP Fire Safety Inspection Certificate (FSIC) *
-              </label>
-              <div
-                onClick={() => setBfpUploaded(true)}
-                className={`cursor-pointer border-2 border-dashed rounded-xl p-4 text-center transition-colors ${
+            <div className="space-y-2">
+              <div className="flex items-center justify-between gap-2">
+                <label className="block text-xs font-semibold text-[#0F172A]">
+                  BFP Fire Safety Inspection Certificate (FSIC) *
+                </label>
+                {!bfpUploaded && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setBfpUploaded(true);
+                      setBfpFileName(`${bfpCertCode}.pdf (Demo Sample)`);
+                    }}
+                    className="text-[11px] font-semibold text-[#1D4ED8] hover:underline"
+                  >
+                    Use sample FSIC for pitch demo
+                  </button>
+                )}
+              </div>
+              <label
+                className={`block cursor-pointer border-2 border-dashed rounded-xl p-4 text-center transition-colors ${
                   bfpUploaded
                     ? 'border-[#15803D] bg-[#F0FDF4]'
                     : 'border-[#CBD5E1] bg-[#FAF8F5] hover:border-[#0F172A]'
                 }`}
               >
+                <input
+                  type="file"
+                  accept="image/*,.pdf"
+                  onChange={handleBfpFileChange}
+                  className="hidden"
+                />
                 {bfpUploaded ? (
                   <div className="text-xs font-semibold text-[#15803D] flex items-center justify-center gap-2">
                     <Check className="w-4 h-4 shrink-0" />
-                    BFP Certificate Attached ({bfpCertCode}.pdf) — Verified
+                    <span>Attached: {bfpFileName || `${bfpCertCode}.pdf`}</span>
                   </div>
                 ) : (
                   <div className="space-y-1">
                     <Upload className="w-5 h-5 mx-auto text-[#64748B]" />
                     <div className="text-xs font-semibold text-[#0F172A]">
-                      Tap to Upload BFP Fire Safety Certificate PDF or Photo
+                      Choose BFP Fire Safety Certificate PDF or Photo
                     </div>
                     <div className="text-[11px] text-[#64748B]">
-                      Required before "BFP Cleared" status is displayed to students.
+                      Required before &quot;BFP Cleared&quot; status is displayed on Tahan.
                     </div>
                   </div>
                 )}
-              </div>
+              </label>
             </div>
           </div>
 

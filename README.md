@@ -1,13 +1,13 @@
-# BalayCapiz — Roxas City Student Housing Portal
+# Tahan — Verified Student Housing & Utility Transparency
 
-**BalayCapiz** (`ph.edu.hercor.balaycapiz`) is an offline-ready, cross-platform civic-tech student boarding house and dormitory discovery application built for **Hercor College (Lawaan & Riverside)**, **Capiz State University (CapSU Main)**, and **Filamer Christian University** in Roxas City, Capiz.
+**Tahan** (`https://tahan.cheyngadgets.site`) is an offline-ready, cross-platform student boarding house and dormitory discovery platform built to bring electric utility transparency, BFP fire safety verification, and street flood profiles to university towns across the Philippines—starting with its flagship pilot in **Roxas City, Capiz** (**Hercor College**, **CapSU Main**, and **Filamer Christian University**).
 
-## Core Features
-* **CAPELCO Rate Transparency:** Compare each property's declared and student-reported electricity rate against the official CAPELCO residential baseline (`₱11.42/kWh`) and calculate personalized monthly appliance bills.
-* **BFP Fire Safety & Flood Elevation:** Filter boarding houses across Lawaan, Fuentes Drive, Tiza, Banica, and Roxas Avenue by Bureau of Fire Protection (BFP) Fire Safety Inspection Certificate (`FSIC`) status and monsoon street elevation.
+## Core Platform Capabilities
+* **Electric Grid Rate Transparency:** Compare each property's declared and tenant-reported electricity rate against the local electric cooperative or utility baseline (`₱11.42/kWh` CAPELCO in Roxas City, with regional support for MORE Power in Iloilo, Negros Power in Bacolod, and Meralco in Metro Manila).
+* **BFP Fire Safety & Flood Elevation:** Filter boarding houses by Bureau of Fire Protection (BFP) Fire Safety Inspection Certificate (`FSIC`) verification, dedicated fire exits, and historical monsoon flood elevation.
 * **500m Campus Map Radar:** Interactive OpenStreetMap + Leaflet.js radar with 500m walking rings, native GPS proximity detection, and offline tile caching.
-* **4-Point Inspection & Saved Shortlist:** Schedule visits, compare rooms side by side, and verify sub-meters, morning water pressure, fire exits, and cell signal on site.
-* **Hybrid Cloud + Offline-First Storage:** Works out of the box with local storage and automatically syncs with Supabase PostgreSQL when `.env.local` credentials are configured.
+* **4-Point Inspection & Saved Shortlist:** Schedule visits, split rent across roommates, and verify sub-meters, morning water pressure, fire exits, and cell signal on site.
+* **Gated Host Portal & 30-Day Listing Renewal:** Protected property owner portal with real BFP certificate file uploads, vacancy slot steppers, and 30-day freshness renewal.
 
 ## Quick Start (Local Development)
 
@@ -24,39 +24,17 @@
    npm run dev
    ```
 
-## Cloud Database Setup (Supabase)
+## Live Deployment & Mobile Packaging
 
-1. Create a free project at [Supabase](https://supabase.com) (Singapore `ap-southeast-1` region).
-2. Run the SQL migration in [supabase/migrations/001_initial_schema.sql](supabase/migrations/001_initial_schema.sql) inside the Supabase SQL Editor.
-3. Add your `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` to `.env.local`.
-4. Seed the initial Roxas City dataset:
-   ```bash
-   npm run db:seed
-   ```
+* **Production Web & PWA:** Hosted on Vercel at [https://tahan.cheyngadgets.site](https://tahan.cheyngadgets.site)
+* **Compiled Android Installer:** [BalayCapiz-v1.0.0.apk](BalayCapiz-v1.0.0.apk) (`android/app/build/outputs/apk/debug/app-debug.apk` — 9.2 MB)
+* **Rebuild Android APK:**
+  ```bash
+  npm run android:apk:debug
+  ```
 
-## Mobile Packaging (Android APK / AAB & iOS)
-
-1. Install Capacitor native packages and initialize Android/iOS projects:
-   ```bash
-   npm run cap:install
-   npm run cap:add:android
-   npm run cap:add:ios
-   ```
-2. Copy the pre-configured Android manifest with GPS, Camera, and Dialer/SMS intent queries:
-   ```bash
-   cp native-templates/android/AndroidManifest.xml android/app/src/main/AndroidManifest.xml
-   ```
-3. Build the web bundle and sync with native shells:
-   ```bash
-   npm run build:mobile
-   ```
-4. Build a debug APK for direct phone installation:
-   ```bash
-   npm run android:apk:debug
-   ```
-
-## Project Documentation & Store Kit
-* [SHIPPING_PLAN.md](SHIPPING_PLAN.md) — End-to-end multi-platform shipping roadmap.
+## Project Documentation
+* [SHIPPING_PLAN.md](SHIPPING_PLAN.md) — End-to-end multi-platform roadmap and progress sheet.
 * [STORE_LISTING.md](STORE_LISTING.md) — Google Play & Apple App Store copy, keywords, and keystore signing guide.
 * [PRIVACY_POLICY.md](PRIVACY_POLICY.md) — RA 10173 & App Store compliant privacy policy.
 * [TERMS_OF_SERVICE.md](TERMS_OF_SERVICE.md) — Platform disclosures, 30-day listing expiry, and tenancy review rules.

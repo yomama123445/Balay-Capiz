@@ -1,6 +1,6 @@
 {
-  "name": "BalayCapiz — Roxas City Student Housing Portal",
-  "description": "Verified student boarding house and dormitory discovery portal for Hercor College, CapSU Main, and Filamer Christian University in Roxas City, Capiz, featuring CAPELCO rate transparency, BFP fire safety verification, and barangay flood risk data.",
+  "name": "Tahan — Verified Student Housing & Utility Transparency",
+  "description": "Verified student boarding house and dormitory discovery platform featuring electric cooperative rate transparency, BFP fire safety verification, and flood elevation profiles. Launching in Roxas City, Capiz with nationwide university hub support.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

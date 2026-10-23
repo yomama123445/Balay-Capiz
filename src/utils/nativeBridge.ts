@@ -1,10 +1,11 @@
 /**
- * BalayCapiz — Cross-Platform Native Bridge (Capacitor Android/iOS + Web Fallbacks)
- * Provides unified access to GPS Geolocation, Haversine Campus Distance Calculation,
- * Native Share Sheet, and Platform Detection without breaking web builds.
+ * Tahan — Cross-Platform Native Bridge (Capacitor Android/iOS + Web Fallbacks)
+ * Live Production Domain: https://tahan.cheyngadgets.site
  */
 
 import { BoardingHouseListing, CAMPUSES, CampusId } from '../data/roxasHousingData';
+
+export const PRODUCTION_DOMAIN_URL = 'https://tahan.cheyngadgets.site';
 
 interface CapacitorGlobal {
   isNativePlatform?: () => boolean;
@@ -56,7 +57,18 @@ export function getRuntimePlatform(): 'android' | 'ios' | 'pwa' | 'web' {
 }
 
 /**
- * Calculates great-circle distance in meters between two GPS coordinates in Roxas City.
+ * Formats a dynamic human-readable Philippine date string (e.g., "October 23, 2026").
+ */
+export function formatCurrentDatePh(): string {
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  }).format(new Date());
+}
+
+/**
+ * Calculates great-circle distance in meters between two GPS coordinates.
  */
 export function calculateDistanceMeters(
   lat1: number,
@@ -64,7 +76,7 @@ export function calculateDistanceMeters(
   lat2: number,
   lng2: number
 ): number {
-  const R = 6371000; // Earth radius in meters
+  const R = 6371000;
   const toRad = (deg: number) => (deg * Math.PI) / 180;
   const dLat = toRad(lat2 - lat1);
   const dLng = toRad(lng2 - lng1);
@@ -89,7 +101,7 @@ export interface UserLocationResult {
 
 /**
  * Fetches current GPS coordinates via Capacitor Native Geolocation or Web Geolocation API
- * and resolves the nearest Roxas City university gate.
+ * and resolves the nearest university gate.
  */
 export async function locateStudentPosition(): Promise<{
   location: UserLocationResult | null;
@@ -123,11 +135,10 @@ export async function locateStudentPosition(): Promise<{
     } else {
       return {
         location: null,
-        error: 'Geolocation is not supported on this device/browser.',
+        error: 'Geolocation is not supported on this device.',
       };
     }
 
-    // Check if coordinates are within Greater Roxas City / Capiz bounding box
     const isWithinRoxasBounds =
       lat >= 11.48 && lat <= 11.65 && lng >= 122.68 && lng <= 122.84;
 
@@ -165,21 +176,21 @@ export async function locateStudentPosition(): Promise<{
 }
 
 /**
- * Triggers native share sheet (Android/iOS/Mobile Web) or copies formatted summary to clipboard.
+ * Triggers native share sheet (Android/iOS/Mobile Web) or copies deep link to clipboard.
  */
 export async function shareListing(
   listing: BoardingHouseListing
 ): Promise<'shared' | 'copied'> {
-  const shareText = `${listing.title} (Brgy. ${listing.barangay}, Roxas City) — ₱${listing.monthlyRentPhp.toLocaleString()}/mo · ${listing.distanceMeters}m to campus · Electricity: ₱${listing.declaredKwhRate.toFixed(2)}/kWh · Contact ${listing.landlordLocalCallName}: ${listing.landlordPhone}`;
-  const shareUrl = typeof window !== 'undefined' ? window.location.origin : 'https://balaycapiz.vercel.app';
+  const shareUrl = `${PRODUCTION_DOMAIN_URL}/?room=${encodeURIComponent(listing.id)}`;
+  const shareText = `${listing.title} (Brgy. ${listing.barangay}) — ₱${listing.monthlyRentPhp.toLocaleString()}/mo · ${listing.distanceMeters}m to campus · Electricity: ₱${listing.declaredKwhRate.toFixed(2)}/kWh`;
 
   const cap = getCapacitor();
   if (cap?.isNativePlatform?.() && cap.Plugins?.Share) {
     await cap.Plugins.Share.share({
-      title: `BalayCapiz: ${listing.title}`,
+      title: `Tahan: ${listing.title}`,
       text: shareText,
       url: shareUrl,
-      dialogTitle: 'Share Boarding House with Classmates or Parents',
+      dialogTitle: 'Share Boarding House',
     });
     return 'shared';
   }
@@ -187,18 +198,18 @@ export async function shareListing(
   if (typeof navigator !== 'undefined' && navigator.share) {
     try {
       await navigator.share({
-        title: `BalayCapiz: ${listing.title}`,
+        title: `Tahan: ${listing.title}`,
         text: shareText,
         url: shareUrl,
       });
       return 'shared';
     } catch {
-      // User cancelled or share failed; fall back to clipboard
+      // Fall back to clipboard
     }
   }
 
   if (typeof navigator !== 'undefined' && navigator.clipboard) {
-    await navigator.clipboard.writeText(`${shareText} — ${shareUrl}`);
+    await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
   }
   return 'copied';
 }

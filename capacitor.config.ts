@@ -1,6 +1,6 @@
 /**
- * Capacitor Cross-Platform Configuration for BalayCapiz
- * Package ID: ph.edu.hercor.balaycapiz
+ * Capacitor Cross-Platform Configuration for Tahan
+ * Live Domain: https://tahan.cheyngadgets.site
  * Target Platforms: Android (APK / Play Store AAB), iOS (App Store / IPA)
  */
 
@@ -36,21 +36,21 @@ export interface CapacitorConfig {
 
 const config: CapacitorConfig = {
   appId: 'ph.edu.hercor.balaycapiz',
-  appName: 'BalayCapiz',
+  appName: 'Tahan',
   webDir: 'dist',
   bundledWebRuntime: false,
   server: {
     androidScheme: 'https',
     iosScheme: 'capacitor',
-    hostname: 'balaycapiz.local',
+    hostname: 'tahan.cheyngadgets.site',
   },
   android: {
     allowMixedContent: false,
     captureInput: true,
     webContentsDebuggingEnabled: false,
     buildOptions: {
-      keystorePath: 'balaycapiz-release.keystore',
-      keystoreAlias: 'balaycapiz',
+      keystorePath: 'tahan-release.keystore',
+      keystoreAlias: 'tahan',
       releaseType: 'AAB',
     },
   },
@@ -62,7 +62,7 @@ const config: CapacitorConfig = {
   },
   plugins: {
     SplashScreen: {
-      launchShowDuration: 1600,
+      launchShowDuration: 1400,
       launchAutoHide: true,
       backgroundColor: '#0F172A',
       androidSplashResourceName: 'splash',

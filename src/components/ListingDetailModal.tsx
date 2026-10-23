@@ -7,6 +7,7 @@ import {
 } from '../data/roxasHousingData';
 import { ScheduledVisit } from '../types/appTypes';
 import { PropertyIllustration, SCENE_LABELS } from './PropertyIllustration';
+import { formatCurrentDatePh, shareListing } from '../utils/nativeBridge';
 import {
   ArrowLeft,
   Heart,
@@ -25,6 +26,7 @@ import {
   MapPin,
   CalendarPlus,
   Users,
+  Share2,
 } from 'lucide-react';
 
 interface ListingDetailModalProps {
@@ -74,7 +76,9 @@ export const ListingDetailModal: React.FC<ListingDetailModalProps> = ({
   const [reportedKwh, setReportedKwh] = useState<string>(listing.declaredKwhRate.toFixed(2));
   const [proofUploaded, setProofUploaded] = useState<boolean>(false);
   const [proofFileName, setProofFileName] = useState<string>('');
+  const [proofPreviewUrl, setProofPreviewUrl] = useState<string | null>(null);
   const [reviewSubmittedMsg, setReviewSubmittedMsg] = useState<boolean>(false);
+  const [shareStatus, setShareStatus] = useState<string | null>(null);
 
   const campusObj = CAMPUSES.find((c) => c.id === listing.nearestCampus);
 
@@ -87,8 +91,8 @@ export const ListingDetailModal: React.FC<ListingDetailModalProps> = ({
 
   const smsBody =
     smsLanguage === 'hiligaynon'
-      ? `Maayong adlaw ${listing.landlordLocalCallName}! Nakita ko ang "${listing.title}" sa BalayCapiz (₱${listing.monthlyRentPhp.toLocaleString()}/mo). Estudyante ako sa ${campusObj?.shortName || 'Roxas City'}. May bakante pa nga ${listing.roomType.toLowerCase()} kag pwede ma-check subong nga semana? Salamat gid!`
-      : `Good day ${listing.landlordLocalCallName}! I saw "${listing.title}" on BalayCapiz (₱${listing.monthlyRentPhp.toLocaleString()}/mo). I'm a student at ${campusObj?.shortName || 'Roxas City'}. Do you still have an available ${listing.roomType.toLowerCase()} slot for viewing this week? Thank you!`;
+      ? `Maayong adlaw ${listing.landlordLocalCallName}! Nakita ko ang "${listing.title}" sa Tahan (₱${listing.monthlyRentPhp.toLocaleString()}/mo). Estudyante ako sa ${campusObj?.shortName || 'Roxas City'}. May bakante pa nga ${listing.roomType.toLowerCase()} kag pwede ma-check subong nga semana? Salamat gid!`
+      : `Good day ${listing.landlordLocalCallName}! I saw "${listing.title}" on Tahan (₱${listing.monthlyRentPhp.toLocaleString()}/mo). I'm a student at ${campusObj?.shortName || 'Roxas City'}. Do you still have an available ${listing.roomType.toLowerCase()} slot for viewing this week? Thank you!`;
 
   const cleanPhone = listing.landlordPhone.replace(/[^0-9+]/g, '');
 
@@ -103,9 +107,34 @@ export const ListingDetailModal: React.FC<ListingDetailModalProps> = ({
     setTimeout(() => setCopiedPhone(false), 2200);
   };
 
-  const handleSimulateProofUpload = () => {
+  const handleShareListing = async () => {
+    const outcome = await shareListing(listing);
+    if (outcome === 'copied') {
+      setShareStatus('Link copied');
+      setTimeout(() => setShareStatus(null), 2200);
+    }
+  };
+
+  const handleProofFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
     setProofUploaded(true);
-    setProofFileName('hercor_student_id_receipt_blurred.jpg');
+    setProofFileName(`${file.name} (${Math.max(1, Math.round(file.size / 1024))} KB)`);
+    if (file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        setProofPreviewUrl(String(ev.target?.result || ''));
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setProofPreviewUrl(null);
+    }
+  };
+
+  const handleUseDemoSampleProof = () => {
+    setProofUploaded(true);
+    setProofFileName('student_enrollment_and_receipt_sample.jpg (Demo Mode)');
+    setProofPreviewUrl(null);
   };
 
   const handleCreateVisit = (e: React.FormEvent) => {
@@ -136,7 +165,7 @@ export const ListingDetailModal: React.FC<ListingDetailModalProps> = ({
         verifiedFireExit: false,
         checkedCellSignal: false,
       },
-      createdAt: 'Oct 22, 2026',
+      createdAt: formatCurrentDatePh(),
     };
 
     onScheduleVisit(newVisit);
@@ -162,13 +191,13 @@ export const ListingDetailModal: React.FC<ListingDetailModalProps> = ({
       reviewerName: reviewerName.trim(),
       reviewerInitials: initials,
       programAndYear,
-      stayPeriod: 'AY 2026–2027 (Current Sem)',
+      stayPeriod: 'Current Semester',
       rating,
       title: reviewTitle.trim(),
       comment: reviewComment.trim(),
       reportedKwhRate: parseFloat(reportedKwh) || listing.declaredKwhRate,
       verificationMethod: 'Student ID + Receipt Verified',
-      verifiedDate: 'October 22, 2026',
+      verifiedDate: formatCurrentDatePh(),
     };
 
     onAddReview(listing.id, newReview);
@@ -177,6 +206,7 @@ export const ListingDetailModal: React.FC<ListingDetailModalProps> = ({
     setReviewComment('');
     setProofUploaded(false);
     setProofFileName('');
+    setProofPreviewUrl(null);
     setShowReviewForm(false);
     setReviewSubmittedMsg(true);
     setTimeout(() => setReviewSubmittedMsg(false), 4000);
@@ -195,10 +225,15 @@ export const ListingDetailModal: React.FC<ListingDetailModalProps> = ({
           Back to Rooms
         </button>
 
-        <div className="flex items-center gap-2.5 text-xs text-[#64748B]">
-          <span className="hidden md:inline font-mono tabular-nums">
-            Verified · {listing.daysUntilExpiry}d before auto-archive
-          </span>
+        <div className="flex items-center gap-2 text-xs text-[#64748B]">
+          <button
+            type="button"
+            onClick={handleShareListing}
+            className="min-h-[40px] inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-2 rounded-xl border border-[#E5E0D8] bg-white text-[#0F172A] hover:bg-[#F3F0EA] text-xs font-semibold transition-colors whitespace-nowrap"
+          >
+            <Share2 className="w-3.5 h-3.5" />
+            <span>{shareStatus || 'Share'}</span>
+          </button>
           <button
             type="button"
             onClick={() => onToggleSave(listing.id)}
@@ -251,14 +286,13 @@ export const ListingDetailModal: React.FC<ListingDetailModalProps> = ({
                   key={label}
                   type="button"
                   onClick={() => setActiveScene(idx)}
-                  className={`min-h-[46px] px-2.5 sm:px-3 py-2 text-left text-xs transition-colors border-b sm:border-b-0 border-r last:border-r-0 border-[#E5E0D8] ${
+                  className={`min-h-[44px] px-3 py-2.5 text-center text-xs transition-colors border-b sm:border-b-0 border-r last:border-r-0 border-[#E5E0D8] ${
                     activeScene === idx
                       ? 'bg-[#0F172A] text-[#FAF8F5] font-semibold'
                       : 'text-[#475569] hover:text-[#0F172A] hover:bg-[#F3F0EA]'
                   }`}
                 >
-                  <div className="font-mono text-[10px] opacity-70">VIEW 0{idx + 1}</div>
-                  <div className="truncate mt-0.5">{label}</div>
+                  <div className="truncate">{label}</div>
                 </button>
               ))}
             </div>
@@ -574,35 +608,60 @@ export const ListingDetailModal: React.FC<ListingDetailModalProps> = ({
                   />
                 </div>
 
-                <div>
-                  <label className="block text-xs font-semibold text-[#0F172A] mb-1">
-                    Proof of Tenancy (Student ID or Signed Rental Receipt) *
-                  </label>
-                  <div
-                    onClick={handleSimulateProofUpload}
-                    className={`cursor-pointer border-2 border-dashed rounded-xl p-4 text-center transition-colors ${
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <label className="block text-xs font-semibold text-[#0F172A]">
+                      Proof of Tenancy (Student ID or Rental Receipt) *
+                    </label>
+                    {!proofUploaded && (
+                      <button
+                        type="button"
+                        onClick={handleUseDemoSampleProof}
+                        className="text-[11px] font-semibold text-[#1D4ED8] hover:underline"
+                      >
+                        Use sample receipt for pitch demo
+                      </button>
+                    )}
+                  </div>
+                  <label
+                    className={`block cursor-pointer border-2 border-dashed rounded-xl p-4 text-center transition-colors ${
                       proofUploaded
                         ? 'border-[#15803D] bg-[#F0FDF4]'
                         : 'border-[#CBD5E1] bg-white hover:border-[#0F172A]'
                     }`}
                   >
+                    <input
+                      type="file"
+                      accept="image/*,.pdf"
+                      onChange={handleProofFileChange}
+                      className="hidden"
+                    />
                     {proofUploaded ? (
-                      <div className="flex items-center justify-center gap-2 text-xs font-semibold text-[#15803D]">
-                        <Check className="w-4 h-4" />
-                        Attached: {proofFileName} (Auto-blurred for privacy)
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-center gap-2 text-xs font-semibold text-[#15803D]">
+                          <Check className="w-4 h-4 shrink-0" />
+                          <span className="truncate">Attached: {proofFileName}</span>
+                        </div>
+                        {proofPreviewUrl && (
+                          <img
+                            src={proofPreviewUrl}
+                            alt="Tenancy receipt preview"
+                            className="h-16 mx-auto rounded-lg border border-[#86EFAC] object-cover"
+                          />
+                        )}
                       </div>
                     ) : (
                       <div className="space-y-1">
                         <Upload className="w-5 h-5 mx-auto text-[#64748B]" />
                         <div className="text-xs font-semibold text-[#0F172A]">
-                          Tap to Attach Student ID or Rental Receipt Photo
+                          Choose Student ID or Rental Receipt Image / PDF
                         </div>
                         <div className="text-[11px] text-[#64748B]">
-                          Sensitive details are blurred before verification.
+                          Used strictly to verify tenancy; never displayed publicly.
                         </div>
                       </div>
                     )}
-                  </div>
+                  </label>
                 </div>
 
                 <div className="flex justify-end gap-2 pt-2">

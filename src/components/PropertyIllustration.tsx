@@ -8,10 +8,10 @@ interface PropertyIllustrationProps {
 }
 
 export const SCENE_LABELS = [
-  'Exterior & Street Elevation',
-  'Room Layout & Study Desk',
-  'BFP Fire Exit & Corridor',
-  'CAPELCO Sub-Meter & Utility'
+  'Building & Elevation',
+  'Room Layout',
+  'Fire Exit & Safety',
+  'Utility Sub-Meter'
 ];
 
 export const PropertyIllustration: React.FC<PropertyIllustrationProps> = ({
